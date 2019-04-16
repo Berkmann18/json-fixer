@@ -1,5 +1,10 @@
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- [![Build Status](https://img.shields.io/circleci/project/all-contributors/all-contributors-cli/master.svg)](https://circleci.com/gh/all-contributors/workflows/all-contributors-cli/tree/master) -->
+[![Code Coverage](https://img.shields.io/codecov/c/github/Berkmann18/json-fixer.svg)](https://codecov.io/github/Berkmann18/json-fixer)
+[![Version](https://img.shields.io/npm/v/json-fixer.svg)](https://www.npmjs.com/package/json-fixer)
+[![Downloads](https://img.shields.io/npm/dm/all-contributors-cli.svg)](http://www.npmtrends.com/json-fixer)
 [![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors)
+[![Star on Github](https://img.shields.io/github/stars/Berkmann18/json-fixer.svg?style=social)](https://github.com/Berkmann18/json-fixer/stargazers)
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
 - [json-fixer](#json-fixer)
