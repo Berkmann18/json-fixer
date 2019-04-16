@@ -1,0 +1,6 @@
+{
+  "name": "sample #3",
+  "type": "JSON",
+  "error": "trailing dot",
+  "version": 0.3
+}

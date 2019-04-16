@@ -26,8 +26,7 @@
     "test": "kcd-scripts test",
     "validate": "kcd-scripts validate",
     "commit": "git-cz",
-    "start": "./dist/cli.js",
-    "dev": "./src/cli.js"
+    "generate": "pegjs src/json.pegjs"
   },
   "husky": {
     "hooks": {
@@ -43,7 +42,7 @@
     "chalk": "^2.4.2",
     "eslint-config-kentcdodds": "^14.3.2",
     "inquirer": "^6.3.1",
-    "jsonlint": "^1.6.3",
+    "pegjs": "^0.10.0",
     "yargs": "^13.2.2"
   },
   "devDependencies": {
@@ -55,7 +54,8 @@
   "eslintIgnore": [
     "node_modules",
     "coverage",
-    "dist"
+    "dist",
+    "src/json.js"
   ],
   "eslintConfig": {
     "extends": "./node_modules/kcd-scripts/eslint.js",

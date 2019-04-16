@@ -1,6 +1,6 @@
-const {parse} = require('jsonlint')
+const {parse, SyntaxError} = require('./src/json')
 
-const captureError = (err) => {
+const captureError = err => {
   const errHeader = err.message.match(/^.*?(\d+):/)
   const errInfo = err.message.match(/Expecting .*? got \S+/)
   return {
@@ -10,7 +10,7 @@ const captureError = (err) => {
   }
 }
 
-const doubleCheck = (data) => {
+const doubleCheck = data => {
   /* eslint-disable no-console */
   try {
     const res = parse(data)
@@ -38,7 +38,7 @@ const fixJson = (err, data) => {
   return doubleCheck(fixedData.join('\n'))
 }
 
-const checkJson = (data) => {
+const checkJson = data => {
   //inspired by https://jsontuneup.com/
   try {
     const res = parse(data)
@@ -49,8 +49,9 @@ const checkJson = (data) => {
       }
     }
   } catch (err) {
+    console.log('err=', err)
     return {
-      data: fixJson(err, data),
+      //data: fixJson(err, data),
       changed: true,
     }
   }
