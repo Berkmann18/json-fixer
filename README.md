@@ -3,6 +3,7 @@
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
 - [json-fixer](#json-fixer)
+  - [Usage](#usage)
   - [Contributors](#contributors)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
@@ -10,6 +11,27 @@
 # json-fixer
 
 A JSON file fixer primarily focused on [All Contributors' CLI](https://github.com/all-contributors/all-contributors-cli).
+
+## Usage
+- In NodeJS
+
+```js
+const jsonFix = require('json-fix')
+
+// Get the (potentially malformed) JSON data ready
+const jsonContent = fs.readFileSync('config.json', 'utf-8')
+
+const { data, changed } = jsonFix(jsonContent); // Lint (and fix) it
+
+if (changed) {
+  // Do something with `data` which is the fixed JSON data from `jsonContent`
+  // e.g. `fs.writeFileSync(configPath, JSON.stringify(config, null, 2))`
+}
+```
+
+- In the CLI
+_Not supported yet_.
+
 
 ## Contributors
 
