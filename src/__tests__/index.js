@@ -37,6 +37,18 @@ describe('keeps a correct file intact', () => {
 //   })
 // })
 
+// it('fix missing quotes', () => {
+//   const json = fs.readFileSync('./test/samples/noQuotes.json', 'utf-8')
+//   const {data, changed} = jf(json)
+//   expect(changed).toBeTruthy()
+//   expect(data).toStrictEqual({
+//     name: 'sample #10',
+//     type: 'JSON',
+//     error: 'missing quotes',
+//     version: "one zero"
+//   })
+// })
+
 describe('fix trailing characters', () => {
   it('dots', () => {
     const json = fs.readFileSync('./test/samples/trailingDot.json', 'utf-8')
@@ -111,14 +123,14 @@ it('fix extra characters', () => {
   })
 })
 
-// it('fix missing commas', () => {
-//   const json = fs.readFileSync('./test/samples/missing.json', 'utf-8')
-//   const {data, changed} = jf(json)
-//   expect(changed).toBeTruthy()
-//   expect(data).toEqual({
-//     name: 'sample #5',
-//     type: 'JSON',
-//     error: 'missing comma',
-//     version: 5
-//   })
-// })
+it('fix missing commas', () => {
+  const json = fs.readFileSync('./test/samples/missing.json', 'utf-8')
+  const {data, changed} = jf(json)
+  expect(changed).toBeTruthy()
+  expect(data).toEqual({
+    name: 'sample #5',
+    type: 'JSON',
+    error: 'missing comma',
+    version: 5,
+  })
+})

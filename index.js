@@ -30,15 +30,15 @@ const extraChar = err =>
 const trailingChar = err => ['.', ',', 'x', 'b', 'o'].includes(err.found)
 
 const missingChar = err => {
-  return err
+  return err.expected[0].text === ',' && ['"', '[', '{'].includes(err.found)
 }
 
 /*eslint-disable no-console */
 const fixJson = (err, data) => {
   const lines = data.split('\n')
-  // lines.forEach((l, i) => process.stdout.write(`${chalk.yellow(i)} ${l}\n`))
-  // console.log(chalk.red('err='))
-  // console.dir(err)
+  lines.forEach((l, i) => process.stdout.write(`${chalk.yellow(i)} ${l}\n`))
+  console.log(chalk.red('err='))
+  console.dir(err)
   const start = err.location.start
   const fixedData = [...lines]
 
@@ -50,7 +50,6 @@ const fixJson = (err, data) => {
     fixedLine = fixedLine.substr(0, fixedLine.length - 1)
     // console.log(`fixed line='${fixedLine}'`)
     fixedData[targetLine] = fixedLine
-    return doubleCheck(fixedData.join('\n'))
   } else if (trailingChar(err)) {
     const targetLine = start.line - 1
     const brokenLine = removeLinebreak(lines[targetLine])
@@ -68,16 +67,16 @@ const fixJson = (err, data) => {
     }
 
     fixedData[targetLine] = baseNumber
-    return doubleCheck(fixedData.join('\n'))
   } else if (missingChar(err)) {
-    //s5
-    process.stdout.write(`${chalk.yellow('Fix not supported yet')}\n`)
+    const targetLine = start.line - 2
+    const brokenLine = removeLinebreak(lines[targetLine])
+    console.log(`broken line='${brokenLine}'`)
+    fixedData[targetLine] = `${brokenLine},`
   } else
     throw new Error(
       `Unsupported issue: ${err.message} (please open an issue at the repo)`,
     )
-
-  return null
+  return doubleCheck(fixedData.join('\n'))
 }
 /*eslint-enable no-console */
 
