@@ -10,9 +10,9 @@ node_js:
 install:
   - yarn
 script:
-  - snyk auth $SNYK_TOKEN
+  - yarn run auth
   - yarn run validate
-  - codecov
+  - yarn run cov
 after_success:
   - snyk monitor
 jobs:
@@ -23,7 +23,7 @@ jobs:
       deploy:
         provider: script
         skip_cleanup: true
-        script: npm run semantic-release
+        script: yarn run semantic-release
 branches:
   except:
     - /^v\d+\.\d+\.\d+$/
