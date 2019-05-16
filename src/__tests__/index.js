@@ -25,17 +25,17 @@ describe('keeps a correct file intact', () => {
   })
 })
 
-// it('fix single quotes', () => {
-//   const json = fs.readFileSync('./test/samples/singleQuote.json', 'utf-8')
-//   const {data, changed} = jf(json)
-//   expect(changed).toBeTruthy()
-//   expect(data).toStrictEqual({
-//     name: 'sample #4',
-//     type: 'JSON',
-//     error: 'single quote',
-//     version: "1"
-//   })
-// })
+it('fix single quotes', () => {
+  const json = fs.readFileSync('./test/samples/singleQuote.json', 'utf-8')
+  const {data, changed} = jf(json)
+  expect(changed).toBeTruthy()
+  expect(data).toStrictEqual({
+    name: 'sample #1',
+    type: 'JSON',
+    error: 'single quote',
+    version: '1',
+  })
+})
 
 // it('fix missing quotes', () => {
 //   const json = fs.readFileSync('./test/samples/noQuotes.json', 'utf-8')

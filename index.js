@@ -29,9 +29,10 @@ const extraChar = err =>
 
 const trailingChar = err => ['.', ',', 'x', 'b', 'o'].includes(err.found)
 
-const missingChar = err => {
-  return err.expected[0].text === ',' && ['"', '[', '{'].includes(err.found)
-}
+const missingChar = err =>
+  err.expected[0].text === ',' && ['"', '[', '{'].includes(err.found)
+
+const singleQuotes = err => err.found === "'"
 
 /*eslint-disable no-console */
 const fixJson = (err, data) => {
@@ -45,10 +46,8 @@ const fixJson = (err, data) => {
   if (extraChar(err)) {
     const targetLine = start.line - 2
     const brokenLine = removeLinebreak(lines[targetLine])
-    // console.log(`broken line='${brokenLine.toString()}'`);
     let fixedLine = brokenLine.trimEnd()
     fixedLine = fixedLine.substr(0, fixedLine.length - 1)
-    // console.log(`fixed line='${fixedLine}'`)
     fixedData[targetLine] = fixedLine
   } else if (trailingChar(err)) {
     const targetLine = start.line - 1
@@ -70,8 +69,12 @@ const fixJson = (err, data) => {
   } else if (missingChar(err)) {
     const targetLine = start.line - 2
     const brokenLine = removeLinebreak(lines[targetLine])
-    console.log(`broken line='${brokenLine}'`)
     fixedData[targetLine] = `${brokenLine},`
+  } else if (singleQuotes(err)) {
+    const targetLine = start.line - 1
+    const brokenLine = removeLinebreak(lines[targetLine])
+    const fixedLine = brokenLine.replace(/(":\s*)'(.*?)'/g, '$1"$2"')
+    fixedData[targetLine] = fixedLine
   } else
     throw new Error(
       `Unsupported issue: ${err.message} (please open an issue at the repo)`,
