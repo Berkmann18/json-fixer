@@ -3,7 +3,7 @@ const jf = require('../../')
 
 describe('keeps a correct file intact', () => {
   it('normal file', () => {
-    const json = fs.readFileSync('./test/samples/s0.json', 'utf-8')
+    const json = fs.readFileSync('./test/samples/normal.json', 'utf-8')
     const {data, changed} = jf(json)
     expect(changed).toBeFalsy()
     expect(data).toEqual({
@@ -14,7 +14,7 @@ describe('keeps a correct file intact', () => {
   })
 
   it('floating points', () => {
-    const json = fs.readFileSync('./test/samples/s2.json', 'utf-8')
+    const json = fs.readFileSync('./test/samples/fp.json', 'utf-8')
     const {data, changed} = jf(json)
     expect(changed).toBeFalsy()
     expect(data).toEqual({
@@ -26,7 +26,7 @@ describe('keeps a correct file intact', () => {
 })
 
 // it('fix single quotes', () => {
-//   const json = fs.readFileSync('./test/samples/s1.json', 'utf-8')
+//   const json = fs.readFileSync('./test/samples/singleQuote.json', 'utf-8')
 //   const {data, changed} = jf(json)
 //   expect(changed).toBeTruthy()
 //   expect(data).toStrictEqual({
@@ -39,7 +39,7 @@ describe('keeps a correct file intact', () => {
 
 describe('fix trailing characters', () => {
   it('dots', () => {
-    const json = fs.readFileSync('./test/samples/s3.json', 'utf-8')
+    const json = fs.readFileSync('./test/samples/trailingDot.json', 'utf-8')
     const {data, changed} = jf(json)
     expect(changed).toBeTruthy()
     expect(data).toEqual({
@@ -51,7 +51,7 @@ describe('fix trailing characters', () => {
   })
 
   it('commas', () => {
-    const json = fs.readFileSync('./test/samples/s6.json', 'utf-8')
+    const json = fs.readFileSync('./test/samples/trailingComma.json', 'utf-8')
     const {data, changed} = jf(json)
     expect(changed).toBeTruthy()
     expect(data).toEqual({
@@ -63,7 +63,7 @@ describe('fix trailing characters', () => {
   })
 
   it('hex\'s "x"', () => {
-    const json = fs.readFileSync('./test/samples/s7.json', 'utf-8')
+    const json = fs.readFileSync('./test/samples/x.json', 'utf-8')
     const {data, changed} = jf(json)
     expect(changed).toBeTruthy()
     expect(data).toEqual({
@@ -75,7 +75,7 @@ describe('fix trailing characters', () => {
   })
 
   it('binary\'s "b"', () => {
-    const json = fs.readFileSync('./test/samples/s8.json', 'utf-8')
+    const json = fs.readFileSync('./test/samples/b.json', 'utf-8')
     const {data, changed} = jf(json)
     expect(changed).toBeTruthy()
     expect(data).toEqual({
@@ -87,7 +87,7 @@ describe('fix trailing characters', () => {
   })
 
   it('octal\'s "o"', () => {
-    const json = fs.readFileSync('./test/samples/s9.json', 'utf-8')
+    const json = fs.readFileSync('./test/samples/o.json', 'utf-8')
     const {data, changed} = jf(json)
     expect(changed).toBeTruthy()
     expect(data).toEqual({
@@ -100,7 +100,7 @@ describe('fix trailing characters', () => {
 })
 
 it('fix extra characters', () => {
-  const json = fs.readFileSync('./test/samples/s4.json', 'utf-8')
+  const json = fs.readFileSync('./test/samples/trailing.json', 'utf-8')
   const {data, changed} = jf(json)
   expect(changed).toBeTruthy()
   expect(data).toEqual({
@@ -112,7 +112,7 @@ it('fix extra characters', () => {
 })
 
 // it('fix missing commas', () => {
-//   const json = fs.readFileSync('./test/samples/s5.json', 'utf-8')
+//   const json = fs.readFileSync('./test/samples/missing.json', 'utf-8')
 //   const {data, changed} = jf(json)
 //   expect(changed).toBeTruthy()
 //   expect(data).toEqual({
