@@ -1,0 +1,34 @@
+language: node_js
+cache:
+  directories:
+    - ~/.npm
+notifications:
+  email: false
+node_js:
+  - 'stable'
+  - 'lts/*'
+install:
+  - npm ci
+  - npm i -g jest codecov
+script:
+  - snyk auth $SNYK_TOKEN
+  - yarn run validate
+  - codecov
+after_success:
+  - snyk monitor
+jobs:
+  include:
+    - stage: release
+      node_js: 'node'
+      script: skip
+      deploy:
+        provider: script
+        skip_cleanup: true
+        script: npm run semantic-release
+branches:
+  except:
+    - /^v\d+\.\d+\.\d+$/
+stages:
+  - name: test
+  - name: release
+    if: branch = master
