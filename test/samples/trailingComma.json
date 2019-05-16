@@ -1,0 +1,6 @@
+{
+  "name": "sample #6",
+  "type": "JSON",
+  "error": "trailing comma",
+  "version": ,6
+}
