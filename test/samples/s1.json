@@ -2,5 +2,5 @@
   "name": "sample #1",
   "type": "JSON",
   "error": "single quote",
-  "version": "1"
+  "version": '1'
 }
