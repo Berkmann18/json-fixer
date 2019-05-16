@@ -8,8 +8,8 @@ node_js:
   - 'stable'
   - 'lts/*'
 install:
-  - npm ci
-  - npm i -g jest codecov
+  - yarn
+  - yarn install -g codecov
 script:
   - snyk auth $SNYK_TOKEN
   - yarn run validate
