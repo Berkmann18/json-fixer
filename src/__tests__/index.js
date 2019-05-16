@@ -37,17 +37,43 @@ describe('keeps a correct file intact', () => {
 //   })
 // })
 
-// it('fix trailing dots', () => {
-//   const json = fs.readFileSync('./test/samples/s3.json', 'utf-8')
-//   const {data, changed} = jf(json)
-//   expect(changed).toBeTruthy()
-//   expect(data).toEqual({
-//     name: 'sample #3',
-//     type: 'JSON',
-//     error: 'trailing dot',
-//     version: 0.3
-//   })
-// })
+describe('fix trailing characters', () => {
+  it('dots', () => {
+    const json = fs.readFileSync('./test/samples/s3.json', 'utf-8')
+    const {data, changed} = jf(json)
+    expect(changed).toBeTruthy()
+    expect(data).toEqual({
+      name: 'sample #3',
+      type: 'JSON',
+      error: 'trailing dot',
+      version: 0.3,
+    })
+  })
+
+  // it('commas', () => {
+  //   const json = fs.readFileSync('./test/samples/s6.json', 'utf-8')
+  //   const {data, changed} = jf(json)
+  //   expect(changed).toBeTruthy()
+  //   expect(data).toEqual({
+  //     name: 'sample #6',
+  //     type: 'JSON',
+  //     error: 'trailing comma',
+  //     version: 0.6
+  //   })
+  // })
+
+  // it('x\'s', () => {
+  //   const json = fs.readFileSync('./test/samples/s7.json', 'utf-8')
+  //   const {data, changed} = jf(json)
+  //   expect(changed).toBeTruthy()
+  //   expect(data).toEqual({
+  //     name: 'sample #7',
+  //     type: 'JSON',
+  //     error: 'trailing x',
+  //     version: 0x7
+  //   })
+  // })
+})
 
 it('fix extra characters', () => {
   const json = fs.readFileSync('./test/samples/s4.json', 'utf-8')

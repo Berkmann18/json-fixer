@@ -30,7 +30,11 @@ const extraChar = err => {
 }
 
 const trailingDot = err => {
-  return err
+  return err.found === '.'
+}
+
+const trailingChar = err => {
+  return [',', 'x'].includes(err.found)
 }
 
 const missingChar = err => {
@@ -58,23 +62,27 @@ const fixJson = (err, data) => {
   fixedData[lnNum - 1] = fixedLine
 
   return doubleCheck(fixedData.join('\n')) */
+  const fixedData = [...lines]
 
   if (extraChar(err)) {
-    //extraChar: s4
-    //Remove char
     const targetLine = start.line - 2
     const brokenLine = removeLinebreak(lines[targetLine])
     // console.log(`broken line='${brokenLine.toString()}'`);
     let fixedLine = brokenLine.trimEnd()
     fixedLine = fixedLine.substr(0, fixedLine.length - 1)
     // console.log(`fixed line='${fixedLine}'`)
-    const fixedData = [...lines]
     fixedData[targetLine] = fixedLine
     return doubleCheck(fixedData.join('\n'))
-  } else if (trailingDot) {
-    //s3
+  } else if (trailingDot(err)) {
+    const targetLine = start.line - 1
+    const brokenLine = removeLinebreak(lines[targetLine])
+    const fixedLine = brokenLine.replace(/\.(\d*)/g, '0.$1')
+
+    fixedData[targetLine] = fixedLine
+    return doubleCheck(fixedData.join('\n'))
+  } else if (trailingChar(err)) {
     process.stdout.write(`${chalk.yellow('Fix not supported yet')}\n`)
-  } else if (missingChar) {
+  } else if (missingChar(err)) {
     //s5
     process.stdout.write(`${chalk.yellow('Fix not supported yet')}\n`)
   } else
