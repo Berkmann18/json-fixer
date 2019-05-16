@@ -40,7 +40,7 @@ const missingChar = err => {
 /*eslint-disable no-console */
 const fixJson = (err, data) => {
   const lines = data.split('\n')
-  lines.forEach((l, i) => console.log(i, l))
+  lines.forEach((l, i) => process.stdout.write(`${chalk.yellow(i)} ${l}\n`))
   // console.log(chalk.red('err='))
   // console.dir(err)
   const start = err.location.start
@@ -73,10 +73,10 @@ const fixJson = (err, data) => {
     return doubleCheck(fixedData.join('\n'))
   } else if (trailingDot) {
     //s3
-    console.log(chalk.yellow('Fix not supported yet'))
+    process.stdout.write(`${chalk.yellow('Fix not supported yet')}\n`)
   } else if (missingChar) {
     //s5
-    console.log(chalk.yellow('Fix not supported yet'))
+    process.stdout.write(`${chalk.yellow('Fix not supported yet')}\n`)
   } else
     throw new Error(
       `Unsupported issue: ${err.message} (please open an issue at the repo)`,
@@ -86,6 +86,10 @@ const fixJson = (err, data) => {
 }
 /*eslint-enable no-console */
 
+/**
+ * @param {string} data JSON string data to check (and fix).
+ * @returns {{data: (Object|string|Array), changed: boolean}} Result
+ */
 const checkJson = data => {
   //inspired by https://jsontuneup.com/
   try {
