@@ -9,7 +9,6 @@ node_js:
   - 'lts/*'
 install:
   - yarn
-  - yarn install -g codecov
 script:
   - snyk auth $SNYK_TOKEN
   - yarn run validate
