@@ -50,29 +50,53 @@ describe('fix trailing characters', () => {
     })
   })
 
-  // it('commas', () => {
-  //   const json = fs.readFileSync('./test/samples/s6.json', 'utf-8')
-  //   const {data, changed} = jf(json)
-  //   expect(changed).toBeTruthy()
-  //   expect(data).toEqual({
-  //     name: 'sample #6',
-  //     type: 'JSON',
-  //     error: 'trailing comma',
-  //     version: 0.6
-  //   })
-  // })
+  it('commas', () => {
+    const json = fs.readFileSync('./test/samples/s6.json', 'utf-8')
+    const {data, changed} = jf(json)
+    expect(changed).toBeTruthy()
+    expect(data).toEqual({
+      name: 'sample #6',
+      type: 'JSON',
+      error: 'trailing comma',
+      version: 0.6,
+    })
+  })
 
-  // it('x\'s', () => {
-  //   const json = fs.readFileSync('./test/samples/s7.json', 'utf-8')
-  //   const {data, changed} = jf(json)
-  //   expect(changed).toBeTruthy()
-  //   expect(data).toEqual({
-  //     name: 'sample #7',
-  //     type: 'JSON',
-  //     error: 'trailing x',
-  //     version: 0x7
-  //   })
-  // })
+  it('hex\'s "x"', () => {
+    const json = fs.readFileSync('./test/samples/s7.json', 'utf-8')
+    const {data, changed} = jf(json)
+    expect(changed).toBeTruthy()
+    expect(data).toEqual({
+      name: 'sample #7',
+      type: 'JSON',
+      error: 'trailing x',
+      version: 0x7,
+    })
+  })
+
+  it('binary\'s "b"', () => {
+    const json = fs.readFileSync('./test/samples/s8.json', 'utf-8')
+    const {data, changed} = jf(json)
+    expect(changed).toBeTruthy()
+    expect(data).toEqual({
+      name: 'sample #8',
+      type: 'JSON',
+      error: 'trailing b',
+      version: 0b1000,
+    })
+  })
+
+  it('octal\'s "o"', () => {
+    const json = fs.readFileSync('./test/samples/s9.json', 'utf-8')
+    const {data, changed} = jf(json)
+    expect(changed).toBeTruthy()
+    expect(data).toEqual({
+      name: 'sample #9',
+      type: 'JSON',
+      error: 'trailing o',
+      version: 0o11,
+    })
+  })
 })
 
 it('fix extra characters', () => {
