@@ -37,17 +37,31 @@ it('fix single quotes', () => {
   })
 })
 
-// it('fix missing quotes', () => {
-//   const json = fs.readFileSync('./test/samples/noQuotes.json', 'utf-8')
-//   const {data, changed} = jf(json)
-//   expect(changed).toBeTruthy()
-//   expect(data).toStrictEqual({
-//     name: 'sample #10',
-//     type: 'JSON',
-//     error: 'missing quotes',
-//     version: "one zero"
-//   })
-// })
+describe('fix missing quotes', () => {
+  it('one word', () => {
+    const json = fs.readFileSync('./test/samples/noQuotes.json', 'utf-8')
+    const {data, changed} = jf(json)
+    expect(changed).toBeTruthy()
+    expect(data).toStrictEqual({
+      name: 'sample #10',
+      type: 'JSON',
+      error: 'missing quotes',
+      version: 'one',
+    })
+  })
+
+  it('several words', () => {
+    const json = fs.readFileSync('./test/samples/missingQuotes.json', 'utf-8')
+    const {data, changed} = jf(json)
+    expect(changed).toBeTruthy()
+    expect(data).toStrictEqual({
+      name: 'sample #11',
+      type: 'JSON',
+      error: 'missing quotes',
+      version: 'a string',
+    })
+  })
+})
 
 describe('fix trailing characters', () => {
   it('dots', () => {

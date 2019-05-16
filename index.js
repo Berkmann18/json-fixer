@@ -34,12 +34,20 @@ const missingChar = err =>
 
 const singleQuotes = err => err.found === "'"
 
+const addQuotes = (data, line, lineNum) => {
+  data[lineNum] = line.replace(/(":\s*)(\S*)/g, '$1"$2"')
+  return doubleCheck(data.join('\n'))
+}
+
+const missingQuotes = err =>
+  /\w/.test(err.found) && err.expected.find(el => el.description === 'string')
+
 /*eslint-disable no-console */
 const fixJson = (err, data) => {
   const lines = data.split('\n')
-  lines.forEach((l, i) => process.stdout.write(`${chalk.yellow(i)} ${l}\n`))
-  console.log(chalk.red('err='))
-  console.dir(err)
+  // lines.forEach((l, i) => process.stdout.write(`${chalk.yellow(i)} ${l}\n`))
+  // console.log(chalk.red('err='))
+  // console.dir(err)
   const start = err.location.start
   const fixedData = [...lines]
 
@@ -53,6 +61,14 @@ const fixJson = (err, data) => {
     const targetLine = start.line - 1
     const brokenLine = removeLinebreak(lines[targetLine])
     const fixedLine = brokenLine.replace(/(":\s*)[.,](\d*)/g, '$10.$2')
+    const unquotedWord = /(":\s*)(\S*)/g.exec(fixedLine)
+    if (
+      unquotedWord &&
+      Number.isNaN(Number(unquotedWord[2])) &&
+      !/([xbo][0-9a-fA-F]+)/g.test(unquotedWord[2])
+    ) {
+      return addQuotes(fixedData, fixedLine, targetLine)
+    }
     let baseNumber = fixedLine.replace(/(":\s*)([xbo][0-9a-fA-F]*)/g, '$1"0$2"')
     if (baseNumber !== fixedLine) {
       process.stdout.write(
@@ -74,6 +90,11 @@ const fixJson = (err, data) => {
     const targetLine = start.line - 1
     const brokenLine = removeLinebreak(lines[targetLine])
     const fixedLine = brokenLine.replace(/(":\s*)'(.*?)'/g, '$1"$2"')
+    fixedData[targetLine] = fixedLine
+  } else if (missingQuotes(err)) {
+    const targetLine = start.line - 1
+    const brokenLine = removeLinebreak(lines[targetLine])
+    const fixedLine = brokenLine.replace(/(":\s*)([\s\S]+)/g, '$1"$2"')
     fixedData[targetLine] = fixedLine
   } else
     throw new Error(

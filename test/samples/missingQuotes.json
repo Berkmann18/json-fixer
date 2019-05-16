@@ -1,6 +1,6 @@
 {
-  "name": "sample #10",
+  "name": "sample #11",
   "type": "JSON",
   "error": "missing quotes",
-  "version": one
+  "version": a string
 }
