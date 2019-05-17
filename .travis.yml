@@ -1,0 +1,33 @@
+language: node_js
+cache:
+  directories:
+    - ~/.npm
+notifications:
+  email: false
+node_js:
+  - 'stable'
+  - 'lts/*'
+install:
+  - yarn
+script:
+  - yarn run auth
+  - yarn run validate
+  - yarn run cov
+after_success:
+  - snyk monitor
+jobs:
+  include:
+    - stage: release
+      node_js: 'node'
+      script: skip
+      deploy:
+        provider: script
+        skip_cleanup: true
+        script: yarn run semantic-release
+branches:
+  except:
+    - /^v\d+\.\d+\.\d+$/
+stages:
+  - name: test
+  - name: release
+    if: branch = master
