@@ -14,7 +14,10 @@
     "url": "https://github.com/Berkmann18/json-fixer/issues"
   },
   "homepage": "https://github.com/Berkmann18/json-fixer#readme",
-  "author": "Maximilian Berkmann <maxieberkmann@gmail.com>",
+  "author": {
+    "name": "Maximilian Berkmann",
+    "email": "maxieberkmann@gmail.com"
+  },
   "license": "MIT",
   "private": false,
   "bin": {
@@ -30,7 +33,7 @@
     "prepare": "snyk protect",
     "auth": "snyk auth $SNYK_TOKEN",
     "cov": "codecov",
-    "semantic-release": "semantic-release"
+    "sr": "semantic-release"
   },
   "husky": {
     "hooks": {
@@ -49,6 +52,9 @@
     "pegjs": "^0.10.0"
   },
   "devDependencies": {
+    "@semantic-release/changelog": "^3.0.1",
+    "@semantic-release/git": "^7.0.5",
+    "@semantic-release/npm": "^5.1.7",
     "codecov": "^3.1.0",
     "cz-conventional-changelog": "^2.1.0",
     "git-cz": "^3.0.1",
