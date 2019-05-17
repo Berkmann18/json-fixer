@@ -57,6 +57,8 @@ const notSquare = err =>
 
 const notCurly = err => err.found === ',' && err.expected[0].text === ':'
 
+const comment = err => err.found === '/'
+
 const fixTrailingChar = ({start, fixedData, verbose}) => {
   if (verbose) psw(chalk.magenta('Trailing character'))
   const targetLine = start.line - 1
@@ -149,6 +151,23 @@ const fixCurlyBrackets = ({fixedData, verbose, targetLine}) => {
   return fixedData
 }
 
+const fixComment = ({start, fixedData, verbose}) => {
+  if (verbose) psw(chalk.magenta('Comment'))
+  const targetLine = start.line - 1
+  const brokenLine = removeLinebreak(fixedData[targetLine])
+  const fixedLine = brokenLine.replace(/(\s*)(\/\/.*|\/\*+.*?\*+\/)/g, '')
+  if (fixedLine.includes('/*')) {
+    //Multi-line comment
+    let end = targetLine + 1
+    while (end <= fixedData.length && !fixedData[end].includes('*/')) ++end
+    for (let i = targetLine + 1; i <= end; ++i) fixedData[i] = '#RM'
+    fixedData[targetLine] = fixedData[targetLine].replace(/\s*\/\*+.*/g, '#RM')
+    return fixedData.filter(l => l !== '#RM')
+  }
+  fixedData[targetLine] = fixedLine
+  return fixedData
+}
+
 /*eslint-disable no-console */
 const fixJson = (err, data, verbose) => {
   const lines = data.split('\n')
@@ -186,6 +205,8 @@ const fixJson = (err, data, verbose) => {
     fixedData = fixSquareBrackets({start, fixedData, verbose, targetLine})
   } else if (notCurly(err)) {
     fixedData = fixCurlyBrackets({fixedData, verbose, targetLine})
+  } else if (comment(err)) {
+    fixedData = fixComment({start, fixedData, verbose, targetLine})
   } else
     throw new Error(
       `Unsupported issue: ${err.message} (please open an issue at the repo)`,

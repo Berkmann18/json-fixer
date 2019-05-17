@@ -198,3 +198,41 @@ describe('fix wrong brackets', () => {
     })
   })
 })
+
+describe('comments', () => {
+  it('inline line', () => {
+    const json = fs.readFileSync('./test/samples/comment.json', 'utf-8')
+    const {data, changed} = jf(json)
+    expect(changed).toBeTruthy()
+    expect(data).toEqual({
+      name: 'sample #16',
+      type: 'JSON',
+      error: 'comment',
+      version: '0x10',
+    })
+  })
+
+  it('single line', () => {
+    const json = fs.readFileSync('./test/samples/smComment.json', 'utf-8')
+    const {data, changed} = jf(json)
+    expect(changed).toBeTruthy()
+    expect(data).toEqual({
+      name: 'sample #17',
+      type: 'JSON',
+      error: 'multi-comment',
+      version: '0x10',
+    })
+  })
+
+  it('multi line', () => {
+    const json = fs.readFileSync('./test/samples/multiComment.json', 'utf-8')
+    const {data, changed} = jf(json)
+    expect(changed).toBeTruthy()
+    expect(data).toEqual({
+      name: 'sample #18',
+      type: 'JSON',
+      error: 'multi-comment',
+      version: 18,
+    })
+  })
+})
