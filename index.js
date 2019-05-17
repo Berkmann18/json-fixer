@@ -35,7 +35,14 @@ const replaceChar = (str, idx, chr) =>
 const extraChar = err =>
   err.expected[0].type === 'other' && ['}', ']'].includes(err.found)
 
-const trailingChar = err => ['.', ',', 'x', 'b', 'o'].includes(err.found)
+const trailingChar = err => {
+  const literal =
+    err.expected[0].type === 'literal' && err.expected[0].text !== ':'
+  return (
+    ['.', ',', 'x', 'b', 'o'].includes(err.found) &&
+    (err.expected[0].type === 'other' || literal)
+  )
+}
 
 const missingChar = err =>
   err.expected[0].text === ',' && ['"', '[', '{'].includes(err.found)
@@ -47,6 +54,8 @@ const missingQuotes = err =>
 
 const notSquare = err =>
   err.found === ':' && [',', ']'].includes(err.expected[0].text)
+
+const notCurly = err => err.found === ',' && err.expected[0].text === ':'
 
 const fixTrailingChar = ({start, fixedData, verbose}) => {
   if (verbose) psw(chalk.magenta('Trailing character'))
@@ -99,6 +108,47 @@ const fixMissingQuotes = ({start, fixedData, verbose}) => {
   return fixedData
 }
 
+const fixSquareBrackets = ({start, fixedData, verbose, targetLine}) => {
+  if (verbose) psw(chalk.magenta('Square brackets instead of curly ones'))
+  const brokenLine = removeLinebreak(
+    fixedData[targetLine].includes('[')
+      ? fixedData[targetLine]
+      : fixedData[++targetLine],
+  )
+  const fixedLine = replaceChar(brokenLine, start.column - 1, '{')
+  fixedData[targetLine] = fixedLine
+
+  try {
+    parse(fixedData.join('\n'))
+  } catch (e) {
+    targetLine = e.location.start.line - 1
+    const newLine = removeLinebreak(fixedData[targetLine]).replace(']', '}')
+    fixedData[targetLine] = newLine
+  }
+  return fixedData
+}
+
+const fixCurlyBrackets = ({fixedData, verbose, targetLine}) => {
+  if (verbose) psw(chalk.magenta('Curly brackets instead of square ones'))
+  const brokenLine = removeLinebreak(
+    fixedData[targetLine].includes('{')
+      ? fixedData[targetLine]
+      : fixedData[++targetLine],
+  )
+  const fixedLine = replaceChar(brokenLine, brokenLine.indexOf('{'), '[')
+  fixedData[targetLine] = fixedLine
+
+  try {
+    parse(fixedData.join('\n'))
+  } catch (e) {
+    targetLine = e.location.start.line - 1
+    const newLine = removeLinebreak(fixedData[targetLine]).replace('}', ']')
+    fixedData[targetLine] = newLine
+  }
+
+  return fixedData
+}
+
 /*eslint-disable no-console */
 const fixJson = (err, data, verbose) => {
   const lines = data.split('\n')
@@ -110,50 +160,32 @@ const fixJson = (err, data, verbose) => {
   }
   const start = err.location.start
   let fixedData = [...lines]
+  let targetLine = start.line - 2
 
   if (extraChar(err)) {
     if (verbose) psw(chalk.magenta('Extra character'))
-    const targetLine = start.line - 2
     const brokenLine = removeLinebreak(lines[targetLine])
     let fixedLine = brokenLine.trimEnd()
     fixedLine = fixedLine.substr(0, fixedLine.length - 1)
     fixedData[targetLine] = fixedLine
-  } else if (trailingChar(err))
+  } else if (trailingChar(err)) {
     fixedData = fixTrailingChar({start, fixedData, verbose})
-  else if (missingChar(err)) {
+  } else if (missingChar(err)) {
     if (verbose) psw(chalk.magenta('Missing character'))
-    const targetLine = start.line - 2
     const brokenLine = removeLinebreak(lines[targetLine])
     fixedData[targetLine] = `${brokenLine},`
   } else if (singleQuotes(err)) {
     if (verbose) psw(chalk.magenta('Single quotes'))
-    const targetLine = start.line - 1
+    targetLine = start.line - 1
     const brokenLine = removeLinebreak(lines[targetLine])
     const fixedLine = brokenLine.replace(/(":\s*)'(.*?)'/g, '$1"$2"')
     fixedData[targetLine] = fixedLine
-  } else if (missingQuotes(err))
+  } else if (missingQuotes(err)) {
     fixedData = fixMissingQuotes({start, fixedData, verbose})
-  else if (notSquare(err)) {
-    let targetLine = start.line - 2
-    const brokenLine = removeLinebreak(
-      lines[targetLine].includes('[') ? lines[targetLine] : lines[++targetLine],
-    )
-    const fixedLine = replaceChar(brokenLine, start.column - 1, '{')
-    fixedData[targetLine] = fixedLine
-
-    try {
-      parse(fixedData.join('\n'))
-    } catch (e) {
-      const newStart = e.location.start
-      const newTargetLine = newStart.line - 1
-      const newLine = removeLinebreak(fixedData[newTargetLine]).replace(
-        ']',
-        '}',
-      )
-      fixedData[newTargetLine] = newLine
-    }
-
-    fixedData[targetLine] = fixedLine
+  } else if (notSquare(err)) {
+    fixedData = fixSquareBrackets({start, fixedData, verbose, targetLine})
+  } else if (notCurly(err)) {
+    fixedData = fixCurlyBrackets({fixedData, verbose, targetLine})
   } else
     throw new Error(
       `Unsupported issue: ${err.message} (please open an issue at the repo)`,

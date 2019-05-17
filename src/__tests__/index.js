@@ -187,6 +187,14 @@ describe('fix wrong brackets', () => {
       },
     })
   })
-  // it('curly brackets', () => {
-  // })
+  it('curly brackets', () => {
+    const json = fs.readFileSync('./test/samples/notCurly.json', 'utf-8')
+    const {data, changed} = jf(json)
+    expect(changed).toBeTruthy()
+    expect(data).toEqual({
+      name: 'sample #15',
+      error: 'wrong brackets',
+      info: ['one', 'two'],
+    })
+  })
 })
