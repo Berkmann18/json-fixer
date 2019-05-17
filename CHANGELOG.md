@@ -1,3 +1,11 @@
+# [1.1.0](https://github.com/Berkmann18/json-fixer/compare/v1.0.0...v1.1.0) (2019-05-17)
+
+
+### Features
+
+* **index:** added a square->curly brackets fixer ([9017579](https://github.com/Berkmann18/json-fixer/commit/9017579))
+* added verbosity and _LHS no quote_ support ([5b1504f](https://github.com/Berkmann18/json-fixer/commit/5b1504f))
+
 # 1.0.0 (2019-05-17)
 
 
