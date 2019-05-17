@@ -1,5 +1,5 @@
 const chalk = require('chalk')
-const {parse} = require('./src/json')
+const {parse} = require('./src/json.pjs')
 
 /* const captureError = err => {
   return {
