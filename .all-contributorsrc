@@ -29,7 +29,8 @@
       "avatar_url": "https://avatars1.githubusercontent.com/u/32174276?v=4",
       "profile": "http://semantic-release.org/",
       "contributions": [
-        "platform"
+        "platform",
+        "doc"
       ]
     }
   ],
