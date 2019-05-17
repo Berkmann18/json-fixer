@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/Berkmann18/json-fixer/compare/v1.1.0...v1.2.0) (2019-05-17)
+
+
+### Features
+
+* **index:** added comment removers ([12bd10d](https://github.com/Berkmann18/json-fixer/commit/12bd10d))
+
 # [1.1.0](https://github.com/Berkmann18/json-fixer/compare/v1.0.0...v1.1.0) (2019-05-17)
 
 
