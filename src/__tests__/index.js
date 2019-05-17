@@ -74,17 +74,17 @@ describe('fix missing quotes', () => {
     })
   })
 
-  // it('LHS: several words', () => {
-  //   const json = fs.readFileSync('./test/samples/missingLHQuotes.json', 'utf-8')
-  //   const {data, changed} = jf(json)
-  //   expect(changed).toBeTruthy()
-  //   expect(data).toStrictEqual({
-  //     name: 'sample #14',
-  //     type: 'JSON',
-  //     error: 'missing quotes',
-  //     'long content': 'a string',
-  //   })
-  // })
+  it('LHS: several words', () => {
+    const json = fs.readFileSync('./test/samples/missingLHQuotes.json', 'utf-8')
+    const {data, changed} = jf(json)
+    expect(changed).toBeTruthy()
+    expect(data).toStrictEqual({
+      name: 'sample #14',
+      type: 'JSON',
+      error: 'missing quotes',
+      'long content': 'a string',
+    })
+  })
 })
 
 describe('fix trailing characters', () => {
@@ -173,12 +173,20 @@ it('fix missing commas', () => {
   })
 })
 
-// describe('fix wrong brackets', () => {
-//   it('square brackets', () => {
-
-//   })
-
-//   it('curly brackets', () => {
-
-//   })
-// })
+describe('fix wrong brackets', () => {
+  // it('square brackets', () => {
+  //   const json = fs.readFileSync('./test/samples/notSquare.json', 'utf-8')
+  //   const {data, changed} = jf(json)
+  //   expect(changed).toBeTruthy()
+  //   expect(data).toEqual({
+  //     name: 'sample #12',
+  //     error: 'wrong brackets',
+  //     info: {
+  //       type: 'JSON',
+  //       version: 12
+  //     }
+  //   })
+  // })
+  // it('curly brackets', () => {
+  // })
+})

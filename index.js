@@ -43,6 +43,9 @@ const singleQuotes = err => err.found === "'"
 const missingQuotes = err =>
   /\w/.test(err.found) && err.expected.find(el => el.description === 'string')
 
+const notSquare = err =>
+  err.found === ':' && [',', ']'].includes(err.expected[0].text)
+
 const fixTrailingChar = ({start, fixedData, verbose}) => {
   if (verbose) psw(chalk.magenta('Trailing character'))
   const targetLine = start.line - 1
@@ -56,7 +59,7 @@ const fixTrailingChar = ({start, fixedData, verbose}) => {
   ) {
     if (verbose) psw(chalk.magenta('Adding quotes...'))
     fixedData[targetLine] = fixedLine.replace(/(":\s*)(\S*)/g, '$1"$2"')
-    return doubleCheck(fixedData.join('\n'), verbose)
+    return fixedData
   }
   let baseNumber = fixedLine.replace(/(":\s*)([xbo][0-9a-fA-F]*)/g, '$1"0$2"')
   if (baseNumber !== fixedLine) {
@@ -72,7 +75,7 @@ const fixTrailingChar = ({start, fixedData, verbose}) => {
   }
 
   fixedData[targetLine] = baseNumber
-  return doubleCheck(fixedData.join('\n'), verbose)
+  return fixedData
 }
 
 const fixMissingQuotes = ({start, fixedData, verbose}) => {
@@ -91,7 +94,7 @@ const fixMissingQuotes = ({start, fixedData, verbose}) => {
   fixedData[targetLine] = `${
     leftSpace === null ? '' : leftSpace[0]
   }${fixedLine}`
-  return doubleCheck(fixedData.join('\n'), verbose)
+  return fixedData
 }
 
 /*eslint-disable no-console */
@@ -104,7 +107,7 @@ const fixJson = (err, data, verbose) => {
     console.dir(err)
   }
   const start = err.location.start
-  const fixedData = [...lines]
+  let fixedData = [...lines]
 
   if (extraChar(err)) {
     if (verbose) psw(chalk.magenta('Extra character'))
@@ -113,9 +116,9 @@ const fixJson = (err, data, verbose) => {
     let fixedLine = brokenLine.trimEnd()
     fixedLine = fixedLine.substr(0, fixedLine.length - 1)
     fixedData[targetLine] = fixedLine
-  } else if (trailingChar(err)) {
-    return fixTrailingChar({start, fixedData, verbose})
-  } else if (missingChar(err)) {
+  } else if (trailingChar(err))
+    fixedData = fixTrailingChar({start, fixedData, verbose})
+  else if (missingChar(err)) {
     if (verbose) psw(chalk.magenta('Missing character'))
     const targetLine = start.line - 2
     const brokenLine = removeLinebreak(lines[targetLine])
@@ -127,7 +130,13 @@ const fixJson = (err, data, verbose) => {
     const fixedLine = brokenLine.replace(/(":\s*)'(.*?)'/g, '$1"$2"')
     fixedData[targetLine] = fixedLine
   } else if (missingQuotes(err)) {
-    return fixMissingQuotes({start, fixedData, verbose})
+    psw('pre')
+    console.log(fixedData)
+    fixedData = fixMissingQuotes({start, fixedData, verbose})
+    psw('post')
+    console.log(fixedData)
+  } else if (notSquare(err)) {
+    console.log('WIP')
   } else
     throw new Error(
       `Unsupported issue: ${err.message} (please open an issue at the repo)`,
