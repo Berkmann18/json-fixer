@@ -174,19 +174,19 @@ it('fix missing commas', () => {
 })
 
 describe('fix wrong brackets', () => {
-  // it('square brackets', () => {
-  //   const json = fs.readFileSync('./test/samples/notSquare.json', 'utf-8')
-  //   const {data, changed} = jf(json)
-  //   expect(changed).toBeTruthy()
-  //   expect(data).toEqual({
-  //     name: 'sample #12',
-  //     error: 'wrong brackets',
-  //     info: {
-  //       type: 'JSON',
-  //       version: 12
-  //     }
-  //   })
-  // })
+  it('square brackets', () => {
+    const json = fs.readFileSync('./test/samples/notSquare.json', 'utf-8')
+    const {data, changed} = jf(json)
+    expect(changed).toBeTruthy()
+    expect(data).toEqual({
+      name: 'sample #12',
+      error: 'wrong brackets',
+      info: {
+        type: 'JSON',
+        version: 12,
+      },
+    })
+  })
   // it('curly brackets', () => {
   // })
 })

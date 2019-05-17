@@ -29,6 +29,8 @@ const doubleCheck = (data, verbose = false) => {
 }
 
 const removeLinebreak = l => l.replace(/[\n\r]/g, '')
+const replaceChar = (str, idx, chr) =>
+  str.substring(0, idx) + chr + str.substring(idx + 1)
 
 const extraChar = err =>
   err.expected[0].type === 'other' && ['}', ']'].includes(err.found)
@@ -129,14 +131,29 @@ const fixJson = (err, data, verbose) => {
     const brokenLine = removeLinebreak(lines[targetLine])
     const fixedLine = brokenLine.replace(/(":\s*)'(.*?)'/g, '$1"$2"')
     fixedData[targetLine] = fixedLine
-  } else if (missingQuotes(err)) {
-    psw('pre')
-    console.log(fixedData)
+  } else if (missingQuotes(err))
     fixedData = fixMissingQuotes({start, fixedData, verbose})
-    psw('post')
-    console.log(fixedData)
-  } else if (notSquare(err)) {
-    console.log('WIP')
+  else if (notSquare(err)) {
+    let targetLine = start.line - 2
+    const brokenLine = removeLinebreak(
+      lines[targetLine].includes('[') ? lines[targetLine] : lines[++targetLine],
+    )
+    const fixedLine = replaceChar(brokenLine, start.column - 1, '{')
+    fixedData[targetLine] = fixedLine
+
+    try {
+      parse(fixedData.join('\n'))
+    } catch (e) {
+      const newStart = e.location.start
+      const newTargetLine = newStart.line - 1
+      const newLine = removeLinebreak(fixedData[newTargetLine]).replace(
+        ']',
+        '}',
+      )
+      fixedData[newTargetLine] = newLine
+    }
+
+    fixedData[targetLine] = fixedLine
   } else
     throw new Error(
       `Unsupported issue: ${err.message} (please open an issue at the repo)`,
