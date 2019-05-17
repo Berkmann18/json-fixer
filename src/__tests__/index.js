@@ -38,7 +38,7 @@ it('fix single quotes', () => {
 })
 
 describe('fix missing quotes', () => {
-  it('one word', () => {
+  it('RHS: one word', () => {
     const json = fs.readFileSync('./test/samples/noQuotes.json', 'utf-8')
     const {data, changed} = jf(json)
     expect(changed).toBeTruthy()
@@ -50,7 +50,7 @@ describe('fix missing quotes', () => {
     })
   })
 
-  it('several words', () => {
+  it('RHS: several words', () => {
     const json = fs.readFileSync('./test/samples/missingQuotes.json', 'utf-8')
     const {data, changed} = jf(json)
     expect(changed).toBeTruthy()
@@ -59,6 +59,30 @@ describe('fix missing quotes', () => {
       type: 'JSON',
       error: 'missing quotes',
       version: 'a string',
+    })
+  })
+
+  it('LHS: one word', () => {
+    const json = fs.readFileSync('./test/samples/noLHQuotes.json', 'utf-8')
+    const {data, changed} = jf(json)
+    expect(changed).toBeTruthy()
+    expect(data).toStrictEqual({
+      name: 'sample #13',
+      type: 'JSON',
+      error: 'missing quotes',
+      version: 'a string',
+    })
+  })
+
+  it('LHS: several words', () => {
+    const json = fs.readFileSync('./test/samples/missingLHQuotes.json', 'utf-8')
+    const {data, changed} = jf(json)
+    expect(changed).toBeTruthy()
+    expect(data).toStrictEqual({
+      name: 'sample #14',
+      type: 'JSON',
+      error: 'missing quotes',
+      'long content': 'a string',
     })
   })
 })
@@ -146,5 +170,31 @@ it('fix missing commas', () => {
     type: 'JSON',
     error: 'missing comma',
     version: 5,
+  })
+})
+
+describe('fix wrong brackets', () => {
+  it('square brackets', () => {
+    const json = fs.readFileSync('./test/samples/notSquare.json', 'utf-8')
+    const {data, changed} = jf(json)
+    expect(changed).toBeTruthy()
+    expect(data).toEqual({
+      name: 'sample #12',
+      error: 'wrong brackets',
+      info: {
+        type: 'JSON',
+        version: 12,
+      },
+    })
+  })
+  it('curly brackets', () => {
+    const json = fs.readFileSync('./test/samples/notCurly.json', 'utf-8')
+    const {data, changed} = jf(json)
+    expect(changed).toBeTruthy()
+    expect(data).toEqual({
+      name: 'sample #15',
+      error: 'wrong brackets',
+      info: ['one', 'two'],
+    })
   })
 })
