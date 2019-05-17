@@ -32,6 +32,15 @@
         "platform",
         "doc"
       ]
+    },
+    {
+      "login": "all-contributors[bot]",
+      "name": "all-contributors[bot]",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/649578?v=4",
+      "profile": "https://github.com/apps/all-contributors",
+      "contributions": [
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7
