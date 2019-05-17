@@ -1,0 +1,9 @@
+{
+  "name": "sample #18",
+  "type": "JSON",
+  "error": "multi-comment",
+  "version": 18
+  /*
+    lorem ipsum dolore sit amet
+  */
+}
