@@ -38,7 +38,7 @@ it('fix single quotes', () => {
 })
 
 describe('fix missing quotes', () => {
-  it('one word', () => {
+  it('RHS: one word', () => {
     const json = fs.readFileSync('./test/samples/noQuotes.json', 'utf-8')
     const {data, changed} = jf(json)
     expect(changed).toBeTruthy()
@@ -50,7 +50,7 @@ describe('fix missing quotes', () => {
     })
   })
 
-  it('several words', () => {
+  it('RHS: several words', () => {
     const json = fs.readFileSync('./test/samples/missingQuotes.json', 'utf-8')
     const {data, changed} = jf(json)
     expect(changed).toBeTruthy()
@@ -61,6 +61,30 @@ describe('fix missing quotes', () => {
       version: 'a string',
     })
   })
+
+  it('LHS: one word', () => {
+    const json = fs.readFileSync('./test/samples/noLHQuotes.json', 'utf-8')
+    const {data, changed} = jf(json)
+    expect(changed).toBeTruthy()
+    expect(data).toStrictEqual({
+      name: 'sample #13',
+      type: 'JSON',
+      error: 'missing quotes',
+      version: 'a string',
+    })
+  })
+
+  // it('LHS: several words', () => {
+  //   const json = fs.readFileSync('./test/samples/missingLHQuotes.json', 'utf-8')
+  //   const {data, changed} = jf(json)
+  //   expect(changed).toBeTruthy()
+  //   expect(data).toStrictEqual({
+  //     name: 'sample #14',
+  //     type: 'JSON',
+  //     error: 'missing quotes',
+  //     'long content': 'a string',
+  //   })
+  // })
 })
 
 describe('fix trailing characters', () => {
@@ -148,3 +172,13 @@ it('fix missing commas', () => {
     version: 5,
   })
 })
+
+// describe('fix wrong brackets', () => {
+//   it('square brackets', () => {
+
+//   })
+
+//   it('curly brackets', () => {
+
+//   })
+// })

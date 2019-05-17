@@ -9,7 +9,7 @@ files.forEach(arg => {
   const file = `./test/samples/${arg}.json`
   const jsonContent = fs.readFileSync(file, 'utf-8')
 
-  const {data, changed} = jsonFix(jsonContent) // Lint (and fix) it
+  const {data, changed} = jsonFix(jsonContent, true) // Lint (and fix) it
 
   if (changed) {
     // Do something with `data` which is the fixed JSON data from `jsonContent`
