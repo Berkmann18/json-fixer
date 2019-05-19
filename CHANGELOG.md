@@ -1,3 +1,12 @@
+# [1.3.0](https://github.com/Berkmann18/json-fixer/compare/v1.2.0...v1.3.0) (2019-05-19)
+
+
+### Features
+
+* added concatenation support ([730d813](https://github.com/Berkmann18/json-fixer/commit/730d813))
+* operations support + refactoring ([191a6b0](https://github.com/Berkmann18/json-fixer/commit/191a6b0)), closes [#10](https://github.com/Berkmann18/json-fixer/issues/10)
+* **index:** round fix + improved quote fixer ([6ecb55e](https://github.com/Berkmann18/json-fixer/commit/6ecb55e))
+
 # [1.2.0](https://github.com/Berkmann18/json-fixer/compare/v1.1.0...v1.2.0) (2019-05-17)
 
 
