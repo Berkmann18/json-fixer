@@ -143,8 +143,8 @@ const fixComment = ({start, fixedData, verbose}) => {
   return fixedData
 }
 
-const fixOp = ({start, fixedData, verbose}) => {
-  if (verbose) psw(chalk.magenta('Operations'))
+const fixOpConcat = ({start, fixedData, verbose}) => {
+  if (verbose) psw(chalk.magenta('Operations/Concatenations'))
   psw(
     chalk.yellow(
       'Please note: calculations made here may not be entirely correct on complex operations',
@@ -159,6 +159,7 @@ const fixOp = ({start, fixedData, verbose}) => {
       eq => eval(eq),
     )
     .replace(/[~!+-]\(?(\d+)\)?/g, eq => eval(eq))
+    .replace(/(":\s*)"(.*?)"\s*\+\s*"(.*?)"/g, '$1"$2$3"')
   /* eslint-enable no-eval */
   fixedData[targetLine] = fixedLine
   return fixedData
@@ -172,5 +173,5 @@ module.exports = {
   fixSquareBrackets,
   fixCurlyBrackets,
   fixComment,
-  fixOp,
+  fixOpConcat,
 }

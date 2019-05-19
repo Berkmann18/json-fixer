@@ -311,17 +311,17 @@ describe('fix operations', () => {
   })
 })
 
-// it('fixes concatenations', () => {
-//   const json = fs.readFileSync('./test/samples/concat.json', 'utf-8')
-//   const {data, changed} = jf(json)
-//   expect(changed).toBeTruthy()
-//   expect(data).toEqual({
-//     name: 'sample #25',
-//     type: 'JSON',
-//     error: 'concat',
-//     version: 25,
-//   })
-// })
+it('fixes concatenations', () => {
+  const json = fs.readFileSync('./test/samples/concat.json', 'utf-8')
+  const {data, changed} = jf(json)
+  expect(changed).toBeTruthy()
+  expect(data).toEqual({
+    name: 'sample #25',
+    type: 'JSON',
+    error: 'concat',
+    version: 25,
+  })
+})
 
 describe('multi rounds', () => {
   it('x2', () => {

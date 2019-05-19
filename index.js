@@ -93,7 +93,7 @@ const fixJson = (err, data, verbose) => {
   } else if (comment(err)) {
     fixedData = fixer.fixComment({start, fixedData, verbose})
   } else if (ops(err)) {
-    fixedData = fixer.fixOp({start, fixedData, verbose})
+    fixedData = fixer.fixOpConcat({start, fixedData, verbose})
   } else
     throw new Error(
       `Unsupported issue: ${err.message} (please open an issue at the repo)`,
