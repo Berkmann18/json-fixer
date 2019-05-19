@@ -10,6 +10,13 @@ const {parse} = require('./src/json.pjs')
 } */
 
 const psw = d => process.stdout.write(`${d}\n`)
+let fixRounds = 0
+let roundThreshold = 20
+
+const setFixThreshold = data => {
+  const lineCount = data.split('\n').length
+  roundThreshold = Math.max(data.length / lineCount, lineCount)
+}
 
 const doubleCheck = (data, verbose = false) => {
   /* eslint-disable no-console */
@@ -22,6 +29,8 @@ const doubleCheck = (data, verbose = false) => {
       psw('Nearly fixed data:')
       data.split('\n').forEach((l, i) => psw(`${chalk.yellow(i)} ${l}`))
     }
+    // eslint-disable-next-line no-use-before-define
+    if (fixRounds < roundThreshold) return fixJson(err, data, verbose)
     console.error(chalk.red(`There's still an error!`))
     throw new Error(err.message)
   }
@@ -95,7 +104,7 @@ const fixMissingQuotes = ({start, fixedData, verbose}) => {
   if (verbose) psw(chalk.magenta('Missing quotes'))
   const targetLine = start.line - 1
   const brokenLine = removeLinebreak(fixedData[targetLine])
-  const NO_RH_QUOTES = /(":\s*)([\s\S]+)/g
+  const NO_RH_QUOTES = /(":\s*)([^,{}[\]]+)/g
   const NO_LH_QUOTES = /(^[^"]\S[\S\s]+)(:\s*["\w{[])/g
   let fixedLine = NO_RH_QUOTES.test(brokenLine)
     ? brokenLine.replace(NO_RH_QUOTES, '$1"$2"')
@@ -170,6 +179,7 @@ const fixComment = ({start, fixedData, verbose}) => {
 
 /*eslint-disable no-console */
 const fixJson = (err, data, verbose) => {
+  ++fixRounds
   const lines = data.split('\n')
   if (verbose) {
     psw(`Data:`)
@@ -231,6 +241,8 @@ const checkJson = (data, verbose = false) => {
       }
     }
   } catch (err) {
+    fixRounds = 0
+    setFixThreshold(data)
     return {
       data: fixJson(err, data, verbose),
       changed: true,

@@ -236,3 +236,30 @@ describe('comments', () => {
     })
   })
 })
+
+//ops and concats
+
+describe('multi rounds', () => {
+  it('x2', () => {
+    const json = fs.readFileSync('./test/samples/twoErrs.json', 'utf-8')
+    const {data, changed} = jf(json)
+    expect(changed).toBeTruthy()
+    expect(data).toEqual({
+      name: 'sample #19',
+      type: 'JSON',
+      error: '2 errors',
+      version: 19,
+    })
+  })
+  it('x3', () => {
+    const json = fs.readFileSync('./test/samples/threeErrs.json', 'utf-8')
+    const {data, changed} = jf(json)
+    expect(changed).toBeTruthy()
+    expect(data).toEqual({
+      name: 'sample #21',
+      type: 'JSON',
+      error: '3 errors',
+      version: 21,
+    })
+  })
+})
