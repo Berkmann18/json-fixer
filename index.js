@@ -1,15 +1,8 @@
 const chalk = require('chalk')
 const {parse} = require('./src/json.pjs')
+const {psw, removeLinebreak} = require('./src/utils')
+const fixer = require('./src/fixer')
 
-/* const captureError = err => {
-  return {
-    msg: err.message,
-    location: err.location,
-    data: err.found,
-  }
-} */
-
-const psw = d => process.stdout.write(`${d}\n`)
 let fixRounds = 0
 let roundThreshold = 20
 
@@ -36,10 +29,6 @@ const doubleCheck = (data, verbose = false) => {
   }
   /* eslint-enable no-console */
 }
-
-const removeLinebreak = l => l.replace(/[\n\r]/g, '')
-const replaceChar = (str, idx, chr) =>
-  str.substring(0, idx) + chr + str.substring(idx + 1)
 
 const extraChar = err =>
   err.expected[0].type === 'other' && ['}', ']'].includes(err.found)
@@ -68,128 +57,8 @@ const notCurly = err => err.found === ',' && err.expected[0].text === ':'
 
 const comment = err => err.found === '/'
 
-const fixTrailingChar = ({start, fixedData, verbose}) => {
-  if (verbose) psw(chalk.magenta('Trailing character'))
-  const targetLine = start.line - 1
-  const brokenLine = removeLinebreak(fixedData[targetLine])
-  const fixedLine = brokenLine.replace(/(":\s*)[.,](\d*)/g, '$10.$2')
-  const unquotedWord = /(":\s*)(\S*)/g.exec(fixedLine)
-  if (unquotedWord) {
-    const NN = Number.isNaN(Number(unquotedWord[2]))
-    if (NN && !/([xbo][0-9a-fA-F]+)/g.test(unquotedWord[2])) {
-      if (verbose) psw(chalk.magenta('Adding quotes...'))
-      fixedData[targetLine] = fixedLine.replace(/(":\s*)(\S*)/g, '$1"$2"')
-      return fixedData
-    }
-    if (!NN && !/\0([xbo][0-9a-fA-F]+)/g.test(unquotedWord[2])) {
-      if (verbose) {
-        psw(
-          chalk.cyan(
-            "Found a non base-10 number and since JSON doesn't support those numbers types. I will turn it into a base-10 number to keep the structure intact",
-          ),
-        )
-      }
-      fixedData[targetLine] = fixedLine.replace(
-        unquotedWord[2],
-        Number(unquotedWord[2]),
-      )
-      return fixedData
-    }
-  }
-  let baseNumber = fixedLine.replace(/(":\s*)([xbo][0-9a-fA-F]*)/g, '$1"0$2"')
-  if (baseNumber !== fixedLine) {
-    if (verbose) {
-      psw(
-        chalk.cyan(
-          "Found a non base-10 number and since JSON doesn't support those numbers types. I will turn it into a base-10 number to keep the structure intact",
-        ),
-      )
-    }
-    baseNumber = baseNumber.replace(/"(0[xbo][0-9a-fA-F]*)"/g, (_, num) =>
-      Number(num),
-    ) //base-(16|2|8) -> base-10
-  }
-
-  fixedData[targetLine] = baseNumber
-  return fixedData
-}
-
-const fixMissingQuotes = ({start, fixedData, verbose}) => {
-  if (verbose) psw(chalk.magenta('Missing quotes'))
-  const targetLine = start.line - 1
-  const brokenLine = removeLinebreak(fixedData[targetLine])
-  const NO_RH_QUOTES = /(":\s*)([^,{}[\]]+)/g
-  const NO_LH_QUOTES = /(^[^"]\S[\S\s]+)(:\s*["\w{[])/g
-  let fixedLine = NO_RH_QUOTES.test(brokenLine)
-    ? brokenLine.replace(NO_RH_QUOTES, '$1"$2"')
-    : brokenLine
-  const leftSpace = fixedLine.match(/^(\s+)/)
-  fixedLine = fixedLine.trimStart()
-  if (NO_LH_QUOTES.test(fixedLine))
-    fixedLine = fixedLine.replace(NO_LH_QUOTES, '"$1"$2')
-  fixedData[targetLine] = `${
-    leftSpace === null ? '' : leftSpace[0]
-  }${fixedLine}`
-  return fixedData
-}
-
-const fixSquareBrackets = ({start, fixedData, verbose, targetLine}) => {
-  if (verbose) psw(chalk.magenta('Square brackets instead of curly ones'))
-  const brokenLine = removeLinebreak(
-    fixedData[targetLine].includes('[')
-      ? fixedData[targetLine]
-      : fixedData[++targetLine],
-  )
-  const fixedLine = replaceChar(brokenLine, start.column - 1, '{')
-  fixedData[targetLine] = fixedLine
-
-  try {
-    parse(fixedData.join('\n'))
-  } catch (e) {
-    targetLine = e.location.start.line - 1
-    const newLine = removeLinebreak(fixedData[targetLine]).replace(']', '}')
-    fixedData[targetLine] = newLine
-  }
-  return fixedData
-}
-
-const fixCurlyBrackets = ({fixedData, verbose, targetLine}) => {
-  if (verbose) psw(chalk.magenta('Curly brackets instead of square ones'))
-  const brokenLine = removeLinebreak(
-    fixedData[targetLine].includes('{')
-      ? fixedData[targetLine]
-      : fixedData[++targetLine],
-  )
-  const fixedLine = replaceChar(brokenLine, brokenLine.indexOf('{'), '[')
-  fixedData[targetLine] = fixedLine
-
-  try {
-    parse(fixedData.join('\n'))
-  } catch (e) {
-    targetLine = e.location.start.line - 1
-    const newLine = removeLinebreak(fixedData[targetLine]).replace('}', ']')
-    fixedData[targetLine] = newLine
-  }
-
-  return fixedData
-}
-
-const fixComment = ({start, fixedData, verbose}) => {
-  if (verbose) psw(chalk.magenta('Comment'))
-  const targetLine = start.line - 1
-  const brokenLine = removeLinebreak(fixedData[targetLine])
-  const fixedLine = brokenLine.replace(/(\s*)(\/\/.*|\/\*+.*?\*+\/)/g, '')
-  if (fixedLine.includes('/*')) {
-    //Multi-line comment
-    let end = targetLine + 1
-    while (end <= fixedData.length && !fixedData[end].includes('*/')) ++end
-    for (let i = targetLine + 1; i <= end; ++i) fixedData[i] = '#RM'
-    fixedData[targetLine] = fixedData[targetLine].replace(/\s*\/\*+.*/g, '#RM')
-    return fixedData.filter(l => l !== '#RM')
-  }
-  fixedData[targetLine] = fixedLine
-  return fixedData
-}
+const ops = err =>
+  ['+', '-', '*', '/', '>', '<', '~', '|', '&', '^'].includes(err.found)
 
 /*eslint-disable no-console */
 const fixJson = (err, data, verbose) => {
@@ -203,34 +72,28 @@ const fixJson = (err, data, verbose) => {
   }
   const start = err.location.start
   let fixedData = [...lines]
-  let targetLine = start.line - 2
+  const targetLine = start.line - 2
 
   if (extraChar(err)) {
-    if (verbose) psw(chalk.magenta('Extra character'))
-    const brokenLine = removeLinebreak(lines[targetLine])
-    let fixedLine = brokenLine.trimEnd()
-    fixedLine = fixedLine.substr(0, fixedLine.length - 1)
-    fixedData[targetLine] = fixedLine
+    fixedData = fixer.fixExtraChar({fixedData, verbose, targetLine})
   } else if (trailingChar(err)) {
-    fixedData = fixTrailingChar({start, fixedData, verbose})
+    fixedData = fixer.fixTrailingChar({start, fixedData, verbose})
   } else if (missingChar(err)) {
     if (verbose) psw(chalk.magenta('Missing character'))
     const brokenLine = removeLinebreak(lines[targetLine])
     fixedData[targetLine] = `${brokenLine},`
   } else if (singleQuotes(err)) {
-    if (verbose) psw(chalk.magenta('Single quotes'))
-    targetLine = start.line - 1
-    const brokenLine = removeLinebreak(lines[targetLine])
-    const fixedLine = brokenLine.replace(/(":\s*)'(.*?)'/g, '$1"$2"')
-    fixedData[targetLine] = fixedLine
+    fixedData = fixer.fixSingleQuotes({start, fixedData, verbose})
   } else if (missingQuotes(err)) {
-    fixedData = fixMissingQuotes({start, fixedData, verbose})
+    fixedData = fixer.fixMissingQuotes({start, fixedData, verbose})
   } else if (notSquare(err)) {
-    fixedData = fixSquareBrackets({start, fixedData, verbose, targetLine})
+    fixedData = fixer.fixSquareBrackets({start, fixedData, verbose, targetLine})
   } else if (notCurly(err)) {
-    fixedData = fixCurlyBrackets({fixedData, verbose, targetLine})
+    fixedData = fixer.fixCurlyBrackets({fixedData, verbose, targetLine})
   } else if (comment(err)) {
-    fixedData = fixComment({start, fixedData, verbose, targetLine})
+    fixedData = fixer.fixComment({start, fixedData, verbose})
+  } else if (ops(err)) {
+    fixedData = fixer.fixOp({start, fixedData, verbose})
   } else
     throw new Error(
       `Unsupported issue: ${err.message} (please open an issue at the repo)`,

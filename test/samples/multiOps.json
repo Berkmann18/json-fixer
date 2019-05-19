@@ -1,0 +1,6 @@
+{
+  "name": "sample #27",
+  "type": "JSON",
+  "error": "multi operations",
+  "version": 1 + 2 * 3
+}

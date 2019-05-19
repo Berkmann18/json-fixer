@@ -273,18 +273,43 @@ describe('comments', () => {
   })
 })
 
-//ops and concats
-// it('fixes operations', () => {
-//   const json = fs.readFileSync('./test/samples/ops.json', 'utf-8')
-//   const {data, changed} = jf(json)
-//   expect(changed).toBeTruthy()
-//   expect(data).toEqual({
-//     name: 'sample #20',
-//     type: 'JSON',
-//     error: 'operations',
-//     version: 20,
-//   })
-// })
+describe('fix operations', () => {
+  it('simple', () => {
+    const json = fs.readFileSync('./test/samples/ops.json', 'utf-8')
+    const {data, changed} = jf(json)
+    expect(changed).toBeTruthy()
+    expect(data).toEqual({
+      name: 'sample #20',
+      type: 'JSON',
+      error: 'operations',
+      version: 20,
+    })
+  })
+
+  it('unary', () => {
+    const json = fs.readFileSync('./test/samples/monOps.json', 'utf-8')
+    const {data, changed} = jf(json)
+    expect(changed).toBeTruthy()
+    expect(data).toEqual({
+      name: 'sample #26',
+      type: 'JSON',
+      error: 'unary operations',
+      version: -7,
+    })
+  })
+
+  it('multi', () => {
+    const json = fs.readFileSync('./test/samples/multiOps.json', 'utf-8')
+    const {data, changed} = jf(json)
+    expect(changed).toBeTruthy()
+    expect(data).toEqual({
+      name: 'sample #27',
+      type: 'JSON',
+      error: 'multi operations',
+      version: 7,
+    })
+  })
+})
 
 // it('fixes concatenations', () => {
 //   const json = fs.readFileSync('./test/samples/concat.json', 'utf-8')
