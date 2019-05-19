@@ -124,6 +124,18 @@ describe('fix trailing characters', () => {
     })
   })
 
+  it('hex\'s "0x"', () => {
+    const json = fs.readFileSync('./test/samples/hex.json', 'utf-8')
+    const {data, changed} = jf(json)
+    expect(changed).toBeTruthy()
+    expect(data).toEqual({
+      name: 'sample #22',
+      type: 'JSON',
+      error: 'hex number',
+      version: 0x16,
+    })
+  })
+
   it('binary\'s "b"', () => {
     const json = fs.readFileSync('./test/samples/b.json', 'utf-8')
     const {data, changed} = jf(json)
@@ -136,6 +148,18 @@ describe('fix trailing characters', () => {
     })
   })
 
+  it('binary\'s "0b"', () => {
+    const json = fs.readFileSync('./test/samples/bin.json', 'utf-8')
+    const {data, changed} = jf(json)
+    expect(changed).toBeTruthy()
+    expect(data).toEqual({
+      name: 'sample #23',
+      type: 'JSON',
+      error: 'binary number',
+      version: 0b10111,
+    })
+  })
+
   it('octal\'s "o"', () => {
     const json = fs.readFileSync('./test/samples/o.json', 'utf-8')
     const {data, changed} = jf(json)
@@ -145,6 +169,18 @@ describe('fix trailing characters', () => {
       type: 'JSON',
       error: 'trailing o',
       version: 0o11,
+    })
+  })
+
+  it('octal\'s "0o"', () => {
+    const json = fs.readFileSync('./test/samples/oct.json', 'utf-8')
+    const {data, changed} = jf(json)
+    expect(changed).toBeTruthy()
+    expect(data).toEqual({
+      name: 'sample #24',
+      type: 'JSON',
+      error: 'octal number',
+      version: 0o30,
     })
   })
 })
@@ -238,6 +274,29 @@ describe('comments', () => {
 })
 
 //ops and concats
+// it('fixes operations', () => {
+//   const json = fs.readFileSync('./test/samples/ops.json', 'utf-8')
+//   const {data, changed} = jf(json)
+//   expect(changed).toBeTruthy()
+//   expect(data).toEqual({
+//     name: 'sample #20',
+//     type: 'JSON',
+//     error: 'operations',
+//     version: 20,
+//   })
+// })
+
+// it('fixes concatenations', () => {
+//   const json = fs.readFileSync('./test/samples/concat.json', 'utf-8')
+//   const {data, changed} = jf(json)
+//   expect(changed).toBeTruthy()
+//   expect(data).toEqual({
+//     name: 'sample #25',
+//     type: 'JSON',
+//     error: 'concat',
+//     version: 25,
+//   })
+// })
 
 describe('multi rounds', () => {
   it('x2', () => {

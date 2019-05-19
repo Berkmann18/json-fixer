@@ -74,23 +74,37 @@ const fixTrailingChar = ({start, fixedData, verbose}) => {
   const brokenLine = removeLinebreak(fixedData[targetLine])
   const fixedLine = brokenLine.replace(/(":\s*)[.,](\d*)/g, '$10.$2')
   const unquotedWord = /(":\s*)(\S*)/g.exec(fixedLine)
-  if (
-    unquotedWord &&
-    Number.isNaN(Number(unquotedWord[2])) &&
-    !/([xbo][0-9a-fA-F]+)/g.test(unquotedWord[2])
-  ) {
-    if (verbose) psw(chalk.magenta('Adding quotes...'))
-    fixedData[targetLine] = fixedLine.replace(/(":\s*)(\S*)/g, '$1"$2"')
-    return fixedData
+  if (unquotedWord) {
+    const NN = Number.isNaN(Number(unquotedWord[2]))
+    if (NN && !/([xbo][0-9a-fA-F]+)/g.test(unquotedWord[2])) {
+      if (verbose) psw(chalk.magenta('Adding quotes...'))
+      fixedData[targetLine] = fixedLine.replace(/(":\s*)(\S*)/g, '$1"$2"')
+      return fixedData
+    }
+    if (!NN && !/\0([xbo][0-9a-fA-F]+)/g.test(unquotedWord[2])) {
+      if (verbose) {
+        psw(
+          chalk.cyan(
+            "Found a non base-10 number and since JSON doesn't support those numbers types. I will turn it into a base-10 number to keep the structure intact",
+          ),
+        )
+      }
+      fixedData[targetLine] = fixedLine.replace(
+        unquotedWord[2],
+        Number(unquotedWord[2]),
+      )
+      return fixedData
+    }
   }
   let baseNumber = fixedLine.replace(/(":\s*)([xbo][0-9a-fA-F]*)/g, '$1"0$2"')
   if (baseNumber !== fixedLine) {
-    if (verbose)
+    if (verbose) {
       psw(
         chalk.cyan(
           "Found a non base-10 number and since JSON doesn't support those numbers types. I will turn it into a base-10 number to keep the structure intact",
         ),
       )
+    }
     baseNumber = baseNumber.replace(/"(0[xbo][0-9a-fA-F]*)"/g, (_, num) =>
       Number(num),
     ) //base-(16|2|8) -> base-10
