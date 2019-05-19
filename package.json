@@ -1,14 +1,14 @@
 {
   "name": "json-fixer",
-  "version": "0.0.0",
+  "version": "1.3.0",
   "description": "A JSON fixer",
   "main": "index.js",
   "repository": "https://github.com/Berkmann18/json-fixer.git",
   "files": [
-    "dist"
+    "src"
   ],
   "engines": {
-    "node": ">=4"
+    "node": ">=6"
   },
   "bugs": {
     "url": "https://github.com/Berkmann18/json-fixer/issues"
@@ -20,9 +20,6 @@
   },
   "license": "MIT",
   "private": false,
-  "bin": {
-    "json-fixer": "dist/cli.js"
-  },
   "scripts": {
     "build": "kcd-scripts build",
     "lint": "kcd-scripts lint",
@@ -43,7 +40,8 @@
   "keywords": [
     "json",
     "fix",
-    "lint"
+    "lint",
+    "check"
   ],
   "dependencies": {
     "@babel/runtime": "^7.4.3",
