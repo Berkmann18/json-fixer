@@ -1,3 +1,10 @@
+## [1.3.1](https://github.com/Berkmann18/json-fixer/compare/v1.3.0...v1.3.1) (2019-05-31)
+
+
+### Bug Fixes
+
+* **security:** security update ([3083a68](https://github.com/Berkmann18/json-fixer/commit/3083a68))
+
 # [1.3.0](https://github.com/Berkmann18/json-fixer/compare/v1.2.0...v1.3.0) (2019-05-19)
 
 
