@@ -23,7 +23,7 @@
   "scripts": {
     "build": "kcd-scripts build",
     "lint": "kcd-scripts lint",
-    "test": "kcd-scripts test",
+    "test": "snyk test && kcd-scripts test",
     "validate": "kcd-scripts validate",
     "commit": "git-cz",
     "generate": "pegjs src/json.pegjs",
@@ -58,7 +58,7 @@
     "git-cz": "^3.0.1",
     "kcd-scripts": "^1.1.3",
     "semantic-release": "^15.13.3",
-    "snyk": "^1.120.1"
+    "snyk": "^1.193.1"
   },
   "eslintIgnore": [
     "node_modules",
