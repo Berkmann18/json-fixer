@@ -43,7 +43,8 @@ A JSON file fixer primarly focused to be used in a NodeJS file.
 - In NodeJS
 
 ```js
-const jsonFix = require('json-fix')
+const jsonFix = require('json-fixer')
+const fs = require('fs')
 
 // Get the (potentially malformed) JSON data ready
 const jsonContent = fs.readFileSync('config.json', 'utf-8')
