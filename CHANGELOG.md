@@ -1,3 +1,15 @@
+## [1.3.2](https://github.com/Berkmann18/json-fixer/compare/v1.3.1...v1.3.2) (2019-09-02)
+
+
+### Bug Fixes
+
+* **security:** vulnerability fix ([8dc1f81](https://github.com/Berkmann18/json-fixer/commit/8dc1f81))
+
+
+### Performance Improvements
+
+* **package:** reduce bundle size by 99.2% ([#15](https://github.com/Berkmann18/json-fixer/issues/15)) ([f915ee9](https://github.com/Berkmann18/json-fixer/commit/f915ee9))
+
 ## [1.3.1](https://github.com/Berkmann18/json-fixer/compare/v1.3.0...v1.3.1) (2019-05-31)
 
 
