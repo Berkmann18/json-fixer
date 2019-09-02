@@ -41,6 +41,15 @@
       "contributions": [
         "doc"
       ]
+    },
+    {
+      "login": "Bkucera",
+      "name": "Ben Kucera",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/14625260?v=4",
+      "profile": "https://github.com/Bkucera",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7
