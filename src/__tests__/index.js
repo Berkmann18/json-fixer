@@ -186,7 +186,7 @@ describe('fix trailing characters', () => {
 })
 
 it('fix extra characters', () => {
-  const json = fs.readFileSync('./test/samples/trailing.json', 'utf-8')
+  const json = fs.readFileSync('./test/samples/extraChar.json', 'utf-8')
   const {data, changed} = jf(json)
   expect(changed).toBeTruthy()
   expect(data).toEqual({
