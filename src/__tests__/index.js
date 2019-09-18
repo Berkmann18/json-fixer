@@ -112,6 +112,21 @@ describe('fix trailing characters', () => {
     })
   })
 
+  it('chars', () => {
+    const json = fs.readFileSync('./test/samples/trailingChar.json', 'utf-8')
+    const {data, changed} = jf(json)
+    expect(changed).toBeTruthy()
+    expect(data).toEqual([
+      {
+        test1: '1',
+        test2: {
+          a: 'b',
+          c: {},
+        },
+      },
+    ])
+  })
+
   it('hex\'s "x"', () => {
     const json = fs.readFileSync('./test/samples/x.json', 'utf-8')
     const {data, changed} = jf(json)

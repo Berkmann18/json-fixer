@@ -4,7 +4,9 @@ const {parse} = require('./json.pjs')
 
 const fixExtraChar = ({fixedData, verbose, targetLine}) => {
   if (verbose) psw(chalk.magenta('Extra character'))
+  if (fixedData[targetLine] === '') --targetLine
   const brokenLine = removeLinebreak(fixedData[targetLine])
+
   let fixedLine = brokenLine.trimEnd()
   fixedLine = fixedLine.substr(0, fixedLine.length - 1)
   fixedData[targetLine] = fixedLine
