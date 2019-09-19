@@ -50,6 +50,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "SvetozarMateev",
+      "name": "Svetozar Mateev",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/25162335?v=4",
+      "profile": "https://github.com/SvetozarMateev",
+      "contributions": [
+        "bug"
+      ]
     }
   ],
   "contributorsPerLine": 7
