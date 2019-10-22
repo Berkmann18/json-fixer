@@ -1,6 +1,6 @@
 const chalk = require('chalk')
-const { parse } = require('./src/json.pjs')
-const { psw, removeLinebreak } = require('./src/utils')
+const {parse} = require('./src/json.pjs')
+const {psw, removeLinebreak} = require('./src/utils')
 const fixer = require('./src/fixer')
 
 let fixRounds = 0
@@ -13,12 +13,12 @@ const setFixThreshold = data => {
 
 const doubleCheck = (data, options = {}) => {
   /* eslint-disable no-console */
-  const verbose = options.verbose;
+  const verbose = options.verbose
   try {
     const res = parse(data)
     psw(`\n${chalk.cyan('The JSON data was fixed!')}`)
     if (res) {
-      return options.parse ? res : data;
+      return options.parse ? res : data
     }
   } catch (err) {
     if (verbose) {
@@ -67,7 +67,7 @@ const ops = err =>
 const fixJson = (err, data, options) => {
   ++fixRounds
   const lines = data.split('\n')
-  const verbose = options.verbose;
+  const verbose = options.verbose
   if (verbose) {
     psw(`Data:`)
     lines.forEach((l, i) => psw(`${chalk.yellow(i)} ${l}`))
@@ -79,25 +79,25 @@ const fixJson = (err, data, options) => {
   const targetLine = start.line - 2
 
   if (extraChar(err)) {
-    fixedData = fixer.fixExtraChar({ fixedData, verbose, targetLine })
+    fixedData = fixer.fixExtraChar({fixedData, verbose, targetLine})
   } else if (trailingChar(err)) {
-    fixedData = fixer.fixTrailingChar({ start, fixedData, verbose })
+    fixedData = fixer.fixTrailingChar({start, fixedData, verbose})
   } else if (missingChar(err)) {
     if (verbose) psw(chalk.magenta('Missing character'))
     const brokenLine = removeLinebreak(lines[targetLine])
     fixedData[targetLine] = `${brokenLine},`
   } else if (singleQuotes(err)) {
-    fixedData = fixer.fixSingleQuotes({ start, fixedData, verbose })
+    fixedData = fixer.fixSingleQuotes({start, fixedData, verbose})
   } else if (missingQuotes(err)) {
-    fixedData = fixer.fixMissingQuotes({ start, fixedData, verbose })
+    fixedData = fixer.fixMissingQuotes({start, fixedData, verbose})
   } else if (notSquare(err)) {
-    fixedData = fixer.fixSquareBrackets({ start, fixedData, verbose, targetLine })
+    fixedData = fixer.fixSquareBrackets({start, fixedData, verbose, targetLine})
   } else if (notCurly(err)) {
-    fixedData = fixer.fixCurlyBrackets({ fixedData, verbose, targetLine })
+    fixedData = fixer.fixCurlyBrackets({fixedData, verbose, targetLine})
   } else if (comment(err)) {
-    fixedData = fixer.fixComment({ start, fixedData, verbose })
+    fixedData = fixer.fixComment({start, fixedData, verbose})
   } else if (ops(err)) {
-    fixedData = fixer.fixOpConcat({ start, fixedData, verbose })
+    fixedData = fixer.fixOpConcat({start, fixedData, verbose})
   } else
     throw new Error(
       `Unsupported issue: ${err.message} (please open an issue at the repo)`,
@@ -109,29 +109,21 @@ const fixJson = (err, data, options) => {
 /**
  * @param {string} data JSON string data to check (and fix).
  * @param {{verbose:boolean, parse:boolean}} options configuration object which specifies verbosity and whether the object should be parsed or returned as fixed string
- * @param {boolean} [verbose=false] Verbosity
  * @returns {{data: (Object|string|Array), changed: boolean}} Result
  */
-const checkJson = (data, options, verbose = false) => {
+const checkJson = (data, options) => {
   //inspired by https://jsontuneup.com/
-  let optionsCopy;
-  if (!options || typeof (options) === "boolean") {
-    optionsCopy = {};
-    optionsCopy.verbose = options;
+  let optionsCopy
+  if (!options || typeof options === 'boolean') {
+    optionsCopy = {}
+    optionsCopy.verbose = options
   } else {
-    optionsCopy = JSON.parse(JSON.stringify(options));
-    optionsCopy.verbose = verbose;
-  }
-
-  if (optionsCopy.verbose === undefined || optionsCopy.verbose === null) {
-    optionsCopy.verbose = verbose;
+    optionsCopy = JSON.parse(JSON.stringify(options))
   }
 
   if (optionsCopy.parse === undefined || optionsCopy.parse === null) {
-    optionsCopy.parse = true;
+    optionsCopy.parse = true
   }
-
-  console.log("opt", optionsCopy)
 
   try {
     const res = parse(data)
