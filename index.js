@@ -11,19 +11,22 @@ const setFixThreshold = data => {
   roundThreshold = Math.max(data.length / lineCount, lineCount)
 }
 
-const doubleCheck = (data, verbose = false) => {
+const doubleCheck = (data, options = {}) => {
   /* eslint-disable no-console */
+  const verbose = options.verbose
   try {
     const res = parse(data)
     psw(`\n${chalk.cyan('The JSON data was fixed!')}`)
-    if (res) return res
+    if (res) {
+      return options.parse ? res : data
+    }
   } catch (err) {
     if (verbose) {
       psw('Nearly fixed data:')
       data.split('\n').forEach((l, i) => psw(`${chalk.yellow(i)} ${l}`))
     }
     // eslint-disable-next-line no-use-before-define
-    if (fixRounds < roundThreshold) return fixJson(err, data, verbose)
+    if (fixRounds < roundThreshold) return fixJson(err, data, options)
     console.error(chalk.red(`There's still an error!`))
     throw new Error(err.message)
   }
@@ -61,9 +64,10 @@ const ops = err =>
   ['+', '-', '*', '/', '>', '<', '~', '|', '&', '^'].includes(err.found)
 
 /*eslint-disable no-console */
-const fixJson = (err, data, verbose) => {
+const fixJson = (err, data, options) => {
   ++fixRounds
   const lines = data.split('\n')
+  const verbose = options.verbose
   if (verbose) {
     psw(`Data:`)
     lines.forEach((l, i) => psw(`${chalk.yellow(i)} ${l}`))
@@ -98,22 +102,34 @@ const fixJson = (err, data, verbose) => {
     throw new Error(
       `Unsupported issue: ${err.message} (please open an issue at the repo)`,
     )
-  return doubleCheck(fixedData.join('\n'), verbose)
+  return doubleCheck(fixedData.join('\n'), options)
 }
 /*eslint-enable no-console */
 
 /**
  * @param {string} data JSON string data to check (and fix).
- * @param {boolean} [verbose=false] Verbosity
+ * @param {{verbose:boolean, parse:boolean}} options configuration object which specifies verbosity and whether the object should be parsed or returned as fixed string
  * @returns {{data: (Object|string|Array), changed: boolean}} Result
  */
-const checkJson = (data, verbose = false) => {
+const checkJson = (data, options) => {
   //inspired by https://jsontuneup.com/
+  let optionsCopy
+  if (!options || typeof options === 'boolean') {
+    optionsCopy = {}
+    optionsCopy.verbose = options
+  } else {
+    optionsCopy = JSON.parse(JSON.stringify(options))
+  }
+
+  if (optionsCopy.parse === undefined || optionsCopy.parse === null) {
+    optionsCopy.parse = true
+  }
+
   try {
     const res = parse(data)
     if (res) {
       return {
-        data: res,
+        data: optionsCopy.parse ? res : data,
         changed: false,
       }
     }
@@ -121,7 +137,7 @@ const checkJson = (data, verbose = false) => {
     fixRounds = 0
     setFixThreshold(data)
     return {
-      data: fixJson(err, data, verbose),
+      data: fixJson(err, data, optionsCopy),
       changed: true,
     }
   }

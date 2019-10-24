@@ -4,7 +4,7 @@ const jf = require('../../')
 describe('keeps a correct file intact', () => {
   it('normal file', () => {
     const json = fs.readFileSync('./test/samples/normal.json', 'utf-8')
-    const {data, changed} = jf(json)
+    const { data, changed } = jf(json)
     expect(changed).toBeFalsy()
     expect(data).toEqual({
       name: 'sample #0',
@@ -15,7 +15,7 @@ describe('keeps a correct file intact', () => {
 
   it('floating points', () => {
     const json = fs.readFileSync('./test/samples/fp.json', 'utf-8')
-    const {data, changed} = jf(json)
+    const { data, changed } = jf(json)
     expect(changed).toBeFalsy()
     expect(data).toEqual({
       name: 'sample #2',
@@ -27,7 +27,7 @@ describe('keeps a correct file intact', () => {
 
 it('fix single quotes', () => {
   const json = fs.readFileSync('./test/samples/singleQuote.json', 'utf-8')
-  const {data, changed} = jf(json)
+  const { data, changed } = jf(json)
   expect(changed).toBeTruthy()
   expect(data).toStrictEqual({
     name: 'sample #1',
@@ -40,7 +40,7 @@ it('fix single quotes', () => {
 describe('fix missing quotes', () => {
   it('RHS: one word', () => {
     const json = fs.readFileSync('./test/samples/noQuotes.json', 'utf-8')
-    const {data, changed} = jf(json)
+    const { data, changed } = jf(json)
     expect(changed).toBeTruthy()
     expect(data).toStrictEqual({
       name: 'sample #10',
@@ -52,7 +52,7 @@ describe('fix missing quotes', () => {
 
   it('RHS: several words', () => {
     const json = fs.readFileSync('./test/samples/missingQuotes.json', 'utf-8')
-    const {data, changed} = jf(json)
+    const { data, changed } = jf(json)
     expect(changed).toBeTruthy()
     expect(data).toStrictEqual({
       name: 'sample #11',
@@ -64,7 +64,7 @@ describe('fix missing quotes', () => {
 
   it('LHS: one word', () => {
     const json = fs.readFileSync('./test/samples/noLHQuotes.json', 'utf-8')
-    const {data, changed} = jf(json)
+    const { data, changed } = jf(json)
     expect(changed).toBeTruthy()
     expect(data).toStrictEqual({
       name: 'sample #13',
@@ -76,7 +76,7 @@ describe('fix missing quotes', () => {
 
   it('LHS: several words', () => {
     const json = fs.readFileSync('./test/samples/missingLHQuotes.json', 'utf-8')
-    const {data, changed} = jf(json)
+    const { data, changed } = jf(json)
     expect(changed).toBeTruthy()
     expect(data).toStrictEqual({
       name: 'sample #14',
@@ -90,7 +90,7 @@ describe('fix missing quotes', () => {
 describe('fix trailing characters', () => {
   it('dots', () => {
     const json = fs.readFileSync('./test/samples/trailingDot.json', 'utf-8')
-    const {data, changed} = jf(json)
+    const { data, changed } = jf(json)
     expect(changed).toBeTruthy()
     expect(data).toEqual({
       name: 'sample #3',
@@ -102,7 +102,7 @@ describe('fix trailing characters', () => {
 
   it('commas', () => {
     const json = fs.readFileSync('./test/samples/trailingComma.json', 'utf-8')
-    const {data, changed} = jf(json)
+    const { data, changed } = jf(json)
     expect(changed).toBeTruthy()
     expect(data).toEqual({
       name: 'sample #6',
@@ -114,7 +114,7 @@ describe('fix trailing characters', () => {
 
   it('chars', () => {
     const json = fs.readFileSync('./test/samples/trailingChar.json', 'utf-8')
-    const {data, changed} = jf(json)
+    const { data, changed } = jf(json)
     expect(changed).toBeTruthy()
     expect(data).toEqual([
       {
@@ -129,7 +129,7 @@ describe('fix trailing characters', () => {
 
   it('hex\'s "x"', () => {
     const json = fs.readFileSync('./test/samples/x.json', 'utf-8')
-    const {data, changed} = jf(json)
+    const { data, changed } = jf(json)
     expect(changed).toBeTruthy()
     expect(data).toEqual({
       name: 'sample #7',
@@ -141,7 +141,7 @@ describe('fix trailing characters', () => {
 
   it('hex\'s "0x"', () => {
     const json = fs.readFileSync('./test/samples/hex.json', 'utf-8')
-    const {data, changed} = jf(json)
+    const { data, changed } = jf(json)
     expect(changed).toBeTruthy()
     expect(data).toEqual({
       name: 'sample #22',
@@ -153,7 +153,7 @@ describe('fix trailing characters', () => {
 
   it('binary\'s "b"', () => {
     const json = fs.readFileSync('./test/samples/b.json', 'utf-8')
-    const {data, changed} = jf(json)
+    const { data, changed } = jf(json)
     expect(changed).toBeTruthy()
     expect(data).toEqual({
       name: 'sample #8',
@@ -165,7 +165,7 @@ describe('fix trailing characters', () => {
 
   it('binary\'s "0b"', () => {
     const json = fs.readFileSync('./test/samples/bin.json', 'utf-8')
-    const {data, changed} = jf(json)
+    const { data, changed } = jf(json)
     expect(changed).toBeTruthy()
     expect(data).toEqual({
       name: 'sample #23',
@@ -177,7 +177,7 @@ describe('fix trailing characters', () => {
 
   it('octal\'s "o"', () => {
     const json = fs.readFileSync('./test/samples/o.json', 'utf-8')
-    const {data, changed} = jf(json)
+    const { data, changed } = jf(json)
     expect(changed).toBeTruthy()
     expect(data).toEqual({
       name: 'sample #9',
@@ -189,7 +189,7 @@ describe('fix trailing characters', () => {
 
   it('octal\'s "0o"', () => {
     const json = fs.readFileSync('./test/samples/oct.json', 'utf-8')
-    const {data, changed} = jf(json)
+    const { data, changed } = jf(json)
     expect(changed).toBeTruthy()
     expect(data).toEqual({
       name: 'sample #24',
@@ -202,7 +202,7 @@ describe('fix trailing characters', () => {
 
 it('fix extra characters', () => {
   const json = fs.readFileSync('./test/samples/extraChar.json', 'utf-8')
-  const {data, changed} = jf(json)
+  const { data, changed } = jf(json)
   expect(changed).toBeTruthy()
   expect(data).toEqual({
     name: 'sample #4',
@@ -214,7 +214,7 @@ it('fix extra characters', () => {
 
 it('fix missing commas', () => {
   const json = fs.readFileSync('./test/samples/missing.json', 'utf-8')
-  const {data, changed} = jf(json)
+  const { data, changed } = jf(json)
   expect(changed).toBeTruthy()
   expect(data).toEqual({
     name: 'sample #5',
@@ -227,7 +227,7 @@ it('fix missing commas', () => {
 describe('fix wrong brackets', () => {
   it('square brackets', () => {
     const json = fs.readFileSync('./test/samples/notSquare.json', 'utf-8')
-    const {data, changed} = jf(json)
+    const { data, changed } = jf(json)
     expect(changed).toBeTruthy()
     expect(data).toEqual({
       name: 'sample #12',
@@ -240,7 +240,7 @@ describe('fix wrong brackets', () => {
   })
   it('curly brackets', () => {
     const json = fs.readFileSync('./test/samples/notCurly.json', 'utf-8')
-    const {data, changed} = jf(json)
+    const { data, changed } = jf(json)
     expect(changed).toBeTruthy()
     expect(data).toEqual({
       name: 'sample #15',
@@ -253,7 +253,7 @@ describe('fix wrong brackets', () => {
 describe('comments', () => {
   it('inline line', () => {
     const json = fs.readFileSync('./test/samples/comment.json', 'utf-8')
-    const {data, changed} = jf(json)
+    const { data, changed } = jf(json)
     expect(changed).toBeTruthy()
     expect(data).toEqual({
       name: 'sample #16',
@@ -265,7 +265,7 @@ describe('comments', () => {
 
   it('single line', () => {
     const json = fs.readFileSync('./test/samples/smComment.json', 'utf-8')
-    const {data, changed} = jf(json)
+    const { data, changed } = jf(json)
     expect(changed).toBeTruthy()
     expect(data).toEqual({
       name: 'sample #17',
@@ -277,7 +277,7 @@ describe('comments', () => {
 
   it('multi line', () => {
     const json = fs.readFileSync('./test/samples/multiComment.json', 'utf-8')
-    const {data, changed} = jf(json)
+    const { data, changed } = jf(json)
     expect(changed).toBeTruthy()
     expect(data).toEqual({
       name: 'sample #18',
@@ -291,7 +291,7 @@ describe('comments', () => {
 describe('fix operations', () => {
   it('simple', () => {
     const json = fs.readFileSync('./test/samples/ops.json', 'utf-8')
-    const {data, changed} = jf(json)
+    const { data, changed } = jf(json)
     expect(changed).toBeTruthy()
     expect(data).toEqual({
       name: 'sample #20',
@@ -303,7 +303,7 @@ describe('fix operations', () => {
 
   it('unary', () => {
     const json = fs.readFileSync('./test/samples/monOps.json', 'utf-8')
-    const {data, changed} = jf(json)
+    const { data, changed } = jf(json)
     expect(changed).toBeTruthy()
     expect(data).toEqual({
       name: 'sample #26',
@@ -315,7 +315,7 @@ describe('fix operations', () => {
 
   it('multi', () => {
     const json = fs.readFileSync('./test/samples/multiOps.json', 'utf-8')
-    const {data, changed} = jf(json)
+    const { data, changed } = jf(json)
     expect(changed).toBeTruthy()
     expect(data).toEqual({
       name: 'sample #27',
@@ -328,7 +328,7 @@ describe('fix operations', () => {
 
 it('fixes concatenations', () => {
   const json = fs.readFileSync('./test/samples/concat.json', 'utf-8')
-  const {data, changed} = jf(json)
+  const { data, changed } = jf(json)
   expect(changed).toBeTruthy()
   expect(data).toEqual({
     name: 'sample #25',
@@ -341,7 +341,7 @@ it('fixes concatenations', () => {
 describe('multi rounds', () => {
   it('x2', () => {
     const json = fs.readFileSync('./test/samples/twoErrs.json', 'utf-8')
-    const {data, changed} = jf(json)
+    const { data, changed } = jf(json)
     expect(changed).toBeTruthy()
     expect(data).toEqual({
       name: 'sample #19',
@@ -352,7 +352,7 @@ describe('multi rounds', () => {
   })
   it('x3', () => {
     const json = fs.readFileSync('./test/samples/threeErrs.json', 'utf-8')
-    const {data, changed} = jf(json)
+    const { data, changed } = jf(json)
     expect(changed).toBeTruthy()
     expect(data).toEqual({
       name: 'sample #21',
@@ -360,5 +360,14 @@ describe('multi rounds', () => {
       error: '3 errors',
       version: 21,
     })
+  })
+})
+
+describe('returns the json as fixed string', () => {
+  it('normal file', () => {
+    const json = fs.readFileSync('./test/samples/normal.json', 'utf-8')
+    const { data } = jf(json, { parse: false })
+    expect(typeof (data)).toBe('string')
+    expect(typeof (JSON.parse(data))).toBe('object')
   })
 })
