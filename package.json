@@ -44,11 +44,11 @@
     "check"
   ],
   "dependencies": {
+    "@babel/runtime": "^7.7.6",
     "chalk": "^2.4.2",
     "pegjs": "^0.10.0"
   },
   "devDependencies": {
-    "@babel/runtime": "^7.7.6",
     "@semantic-release/changelog": "^3.0.6",
     "@semantic-release/git": "^7.0.18",
     "@semantic-release/npm": "^5.3.4",

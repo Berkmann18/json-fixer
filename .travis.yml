@@ -8,11 +8,11 @@ node_js:
   - 'stable'
   - 'lts/*'
 install:
-  - yarn
+  - npm i
 script:
-  - yarn run auth
-  - yarn run validate
-  - yarn run cov
+  - npm run auth
+  - npm run validate
+  - npm run cov
 after_success:
   - snyk monitor
 jobs:
@@ -23,7 +23,7 @@ jobs:
       deploy:
         provider: script
         skip_cleanup: true
-        script: yarn run sr
+        script: npm run sr
 branches:
   except:
     - /^v\d+\.\d+\.\d+$/
