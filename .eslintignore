@@ -1,3 +1,4 @@
 test/samples/*.json
 test/sandbox.js
 src/json.js
+dist
