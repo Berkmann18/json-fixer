@@ -1,3 +1,17 @@
+# [1.4.0](https://github.com/Berkmann18/json-fixer/compare/v1.3.2...v1.4.0) (2019-12-15)
+
+
+### Bug Fixes
+
+* **fixer:** improved trailing character fixer ([d671f0c](https://github.com/Berkmann18/json-fixer/commit/d671f0c68d62bbb11919fdad3bf128f71fb20d84)), closes [#18](https://github.com/Berkmann18/json-fixer/issues/18)
+* **package-lock:** vulnerability fix ([a61b48a](https://github.com/Berkmann18/json-fixer/commit/a61b48abd7ebe3a6fb429e6934329a32e10d2100))
+* **security:** bumped outdated packages + fixed vulnerabilities ([78bf487](https://github.com/Berkmann18/json-fixer/commit/78bf48760143eff21316faaa95ed8307a72f4d49))
+
+
+### Features
+
+* added options object with parse option ([#21](https://github.com/Berkmann18/json-fixer/issues/21)) ([22874df](https://github.com/Berkmann18/json-fixer/commit/22874dfa67135a2bf6e8d84e8d01b37a708e58eb))
+
 ## [1.3.3](https://github.com/Berkmann18/json-fixer/compare/v1.3.2...v1.3.3) (2019-09-18)
 
 ### Bug Fixes
