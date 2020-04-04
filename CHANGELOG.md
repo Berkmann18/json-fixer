@@ -1,3 +1,10 @@
+## [1.4.1](https://github.com/Berkmann18/json-fixer/compare/v1.4.0...v1.4.1) (2020-04-04)
+
+
+### Bug Fixes
+
+* **package:** vulnerability fix ([7914f15](https://github.com/Berkmann18/json-fixer/commit/7914f156e9554000b1cb753aaccf07b77e3aadb7))
+
 # [1.4.0](https://github.com/Berkmann18/json-fixer/compare/v1.3.2...v1.4.0) (2019-12-15)
 
 
