@@ -1,0 +1,8 @@
+test
+.github
+.prettierignore
+.vscode
+**/*.spec.*
+coverage
+.nyc_output
+*.log

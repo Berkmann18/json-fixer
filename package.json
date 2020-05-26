@@ -8,7 +8,7 @@
     "src"
   ],
   "engines": {
-    "node": ">=6"
+    "node": ">=10"
   },
   "bugs": {
     "url": "https://github.com/Berkmann18/json-fixer/issues"
@@ -21,10 +21,14 @@
   "license": "MIT",
   "private": false,
   "scripts": {
-    "build": "kcd-scripts build",
-    "lint": "kcd-scripts lint",
-    "test": "snyk test && kcd-scripts test",
-    "validate": "kcd-scripts validate",
+    "lint": "eslint . && npm run lint:lockfile && npm run lint:md",
+    "lint:fix": "eslint . --fix",
+    "lint:lockfile": "lockfile-lint --path package-lock.json --type npm --validate-https --allowed-hosts npm yarn",
+    "lint:md": "remark . .github",
+    "format": "prettier --write 'src/*.js' index.js",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "sec": "snyk test",
     "commit": "git-cz",
     "generate": "pegjs src/json.pegjs",
     "prepare": "snyk protect",
@@ -34,8 +38,19 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "kcd-scripts pre-commit"
+      "commit-msg": "commitlint --env HUSKY_GIT_PARAMS",
+      "pre-commit": "lint-staged",
+      "post-merge": "npm i",
+      "pre-push": "npm run lint && npm t"
     }
+  },
+  "lint-staged": {
+    "*.js": [
+      "npm run format"
+    ],
+    "*.md": [
+      "remark"
+    ]
   },
   "keywords": [
     "json",
@@ -44,41 +59,66 @@
     "check"
   ],
   "dependencies": {
-    "@babel/runtime": "^7.7.6",
+    "@babel/runtime": "^7.9.6",
     "chalk": "^3.0.0",
     "pegjs": "^0.10.0"
   },
   "devDependencies": {
+    "@commitlint/cli": "^8.3.5",
+    "@commitlint/config-conventional": "^8.3.4",
     "@semantic-release/changelog": "^3.0.6",
     "@semantic-release/git": "^7.0.18",
     "@semantic-release/npm": "^5.3.4",
-    "codecov": "^3.6.1",
-    "cz-conventional-changelog": "^3.0.2",
-    "eslint-config-kentcdodds": "^14.7.0",
+    "codecov": "^3.7.0",
+    "cz-conventional-changelog": "^3.2.0",
+    "eslint": "^6.7.2",
+    "eslint-plugin-jest": "^23.8.2",
+    "eslint-plugin-jquery": "^1.5.1",
+    "eslint-plugin-node": "^11.0.0",
+    "eslint-plugin-security": "^1.4.0",
+    "eslint-plugin-standard": "^4.0.0",
+    "eslint-plugin-you-dont-need-lodash-underscore": "^6.8.0",
     "git-cz": "^3.3.0",
-    "kcd-scripts": "^1.12.1",
+    "husky": "^4.2.5",
+    "jest": "^26.0.1",
+    "lint-staged": "^10.1.7",
+    "lockfile-lint": "^4.2.2",
+    "prettier": "^2.0.5",
+    "remark-cli": "^8.0.0",
+    "remark-preset-lint-consistent": "^3.0.0",
+    "remark-preset-lint-recommended": "^4.0.0",
     "semantic-release": "^15.13.31",
-    "snyk": "^1.260.0"
-  },
-  "eslintIgnore": [
-    "node_modules",
-    "coverage",
-    "dist",
-    "src/json.js"
-  ],
-  "eslintConfig": {
-    "extends": "./node_modules/kcd-scripts/eslint.js",
-    "rules": {
-      "camelcase": "off",
-      "no-process-exit": "off",
-      "import/extensions": "off",
-      "func-names": "off",
-      "consistent-return": "off"
-    }
+    "snyk": "^1.328.0"
   },
   "config": {
     "commitizen": {
       "path": "cz-conventional-changelog"
     }
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "verbose": true,
+    "notify": true,
+    "collectCoverage": true,
+    "coverageThreshold": {
+      "global": {
+        "branches": 50,
+        "functions": 40,
+        "lines": 50,
+        "statements": 50
+      }
+    },
+    "testPathIgnorePatterns": [
+      "/__tests__/.*/__fixtures__/.*"
+    ],
+    "collectCoverageFrom": [
+      "index.js",
+      "src/**/*.{js,ts}"
+    ]
   }
 }
