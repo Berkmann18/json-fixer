@@ -1,0 +1,64 @@
+{
+  "env": {
+    "node": true,
+    "es6": true,
+    "jest": true
+  },
+  "plugins": [
+    "import",
+    "standard",
+    "node",
+    "security",
+    "jest",
+    "jquery",
+    "@typescript-eslint"
+  ],
+  "extends": [
+    "eslint:recommended",
+    "standard",
+    "plugin:security/recommended",
+    "plugin:node/recommended",
+    "plugin:you-dont-need-lodash-underscore/compatible",
+    "plugin:@typescript-eslint/recommended"
+  ],
+  "rules": {
+    "@typescript-eslint/indent": "off",
+    "@typescript-eslint/no-non-null-assertion": "warn",
+    "@typescript-eslint/no-var-requires": "off",
+    "indent": [
+      "error",
+      2
+    ],
+    "linebreak-style": [
+      "error"
+    ],
+    "no-console": "off",
+    "no-extra-semi": "off",
+    "no-process-exit": "warn",
+    "prefer-const": "warn",
+    "quotes": [
+      "error",
+      "single"
+    ],
+    "no-trailing-spaces": [
+      "error"
+    ],
+    "semi": "off",
+    "symbol-description": [
+      "warn"
+    ],
+    "jest/no-disabled-tests": "error",
+    "jest/no-focused-tests": "error",
+    "jest/no-identical-title": "error",
+    "node/no-unsupported-features": "off",
+    "node/no-unsupported-features/es-syntax": "off",
+    "node/no-unpublished-require": "off"
+  },
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaVersion": 9,
+    "ecmaFeatures": {
+      "impliedStrict": true
+    }
+  }
+}
