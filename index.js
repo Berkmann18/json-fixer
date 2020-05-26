@@ -27,7 +27,7 @@ const doubleCheck = (data, options = {}) => {
     }
     // eslint-disable-next-line no-use-before-define
     if (fixRounds < roundThreshold) return fixJson(err, data, options);
-    console.error(chalk.red(`There's still an error!`));
+    console.error(chalk.red("There's still an error!"));
     throw new Error(err.message);
   }
   /* eslint-enable no-console */
@@ -63,7 +63,7 @@ const fixJson = (err, data, options) => {
   const lines = data.split('\n');
   const verbose = options.verbose;
   if (verbose) {
-    psw(`Data:`);
+    psw('Data:');
     lines.forEach((l, i) => psw(`${chalk.yellow(i)} ${l}`));
     psw(chalk.red('err='));
     console.dir(err);
