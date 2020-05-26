@@ -32,7 +32,8 @@
     "commit": "git-cz",
     "generate": "pegjs src/json.pegjs",
     "prepare": "snyk protect",
-    "sr": "semantic-release"
+    "sr": "semantic-release",
+    "build": "echo 0"
   },
   "husky": {
     "hooks": {
