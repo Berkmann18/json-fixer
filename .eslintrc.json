@@ -5,7 +5,6 @@
     "jest": true
   },
   "plugins": [
-    "import",
     "standard",
     "node",
     "security",
@@ -15,16 +14,11 @@
   ],
   "extends": [
     "eslint:recommended",
-    "standard",
     "plugin:security/recommended",
     "plugin:node/recommended",
-    "plugin:you-dont-need-lodash-underscore/compatible",
-    "plugin:@typescript-eslint/recommended"
+    "plugin:you-dont-need-lodash-underscore/compatible"
   ],
   "rules": {
-    "@typescript-eslint/indent": "off",
-    "@typescript-eslint/no-non-null-assertion": "warn",
-    "@typescript-eslint/no-var-requires": "off",
     "indent": [
       "error",
       2
@@ -54,7 +48,6 @@
     "node/no-unsupported-features/es-syntax": "off",
     "node/no-unpublished-require": "off"
   },
-  "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "ecmaVersion": 9,
     "ecmaFeatures": {
