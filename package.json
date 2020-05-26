@@ -119,9 +119,6 @@
     "collectCoverageFrom": [
       "index.js",
       "src/**/*.{js,ts}"
-    ],
-    "testMatch": [
-      "**/*.test.js"
     ]
   }
 }
