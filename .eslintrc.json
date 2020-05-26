@@ -9,8 +9,7 @@
     "node",
     "security",
     "jest",
-    "jquery",
-    "@typescript-eslint"
+    "jquery"
   ],
   "extends": [
     "eslint:recommended",
