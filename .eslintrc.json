@@ -29,10 +29,6 @@
     "no-extra-semi": "off",
     "no-process-exit": "warn",
     "prefer-const": "warn",
-    "quotes": [
-      "error",
-      "single"
-    ],
     "no-trailing-spaces": [
       "error"
     ],
