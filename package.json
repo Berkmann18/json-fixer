@@ -74,6 +74,7 @@
     "eslint": "^6.7.2",
     "eslint-plugin-node": "^11.0.0",
     "eslint-plugin-security": "^1.4.0",
+    "eslint-plugin-standard": "^4.0.0",
     "eslint-plugin-you-dont-need-lodash-underscore": "^6.8.0",
     "git-cz": "^3.3.0",
     "husky": "^4.2.5",
