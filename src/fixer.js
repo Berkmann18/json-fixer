@@ -3,6 +3,7 @@ const { psw, removeLinebreak, replaceChar } = require('./utils');
 const { parse } = require('./json.pjs');
 
 const fixExtraChar = ({ fixedData, verbose, targetLine }) => {
+  /* eslint-disable security/detect-object-injection */
   if (verbose) psw(chalk.magenta('Extra character'));
   if (fixedData[targetLine] === '') --targetLine;
   const brokenLine = removeLinebreak(fixedData[targetLine]);
@@ -64,6 +65,7 @@ const fixTrailingChar = ({ start, fixedData, verbose }) => {
 };
 
 const fixMissingQuotes = ({ start, fixedData, verbose }) => {
+  /* eslint-disable security/detect-object-injection */
   if (verbose) psw(chalk.magenta('Missing quotes'));
   const targetLine = start.line - 1;
   const brokenLine = removeLinebreak(fixedData[targetLine]);
@@ -80,10 +82,12 @@ const fixMissingQuotes = ({ start, fixedData, verbose }) => {
 };
 
 const fixSquareBrackets = ({ start, fixedData, verbose, targetLine }) => {
+  /* eslint-disable security/detect-object-injection */
   if (verbose) psw(chalk.magenta('Square brackets instead of curly ones'));
-  const brokenLine = removeLinebreak(
-    fixedData[targetLine].includes('[') ? fixedData[targetLine] : fixedData[++targetLine]
-  );
+  const lineToChange = fixedData[targetLine].includes('[')
+    ? fixedData[targetLine]
+    : fixedData[++targetLine];
+  const brokenLine = removeLinebreak(lineToChange);
   const fixedLine = replaceChar(brokenLine, start.column - 1, '{');
   fixedData[targetLine] = fixedLine;
 
