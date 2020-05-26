@@ -32,8 +32,6 @@
     "commit": "git-cz",
     "generate": "pegjs src/json.pegjs",
     "prepare": "snyk protect",
-    "auth": "snyk auth $SNYK_TOKEN",
-    "cov": "codecov",
     "sr": "semantic-release"
   },
   "husky": {
