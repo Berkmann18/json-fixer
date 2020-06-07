@@ -76,7 +76,11 @@ const fixMissingQuotes = ({ start, fixedData, verbose }) => {
     : brokenLine;
   const leftSpace = fixedLine.match(/^(\s+)/);
   fixedLine = fixedLine.trimStart();
-  if (NO_LH_QUOTES.test(fixedLine)) fixedLine = fixedLine.replace(NO_LH_QUOTES, '"$1"$2');
+  if (NO_LH_QUOTES.test(fixedLine)) {
+    const firstColon = fixedLine.indexOf(':');
+    const leftHand = fixedLine.substring(0, firstColon);
+    fixedLine = `"${leftHand}"${fixedLine.substring(firstColon)}`;
+  }
   fixedData[targetLine] = `${leftSpace === null ? '' : leftSpace[0]}${fixedLine}`;
   return fixedData;
 };
