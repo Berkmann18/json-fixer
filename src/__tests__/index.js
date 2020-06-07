@@ -85,6 +85,15 @@ describe('fix missing quotes', () => {
       'long content': 'a string'
     });
   });
+
+  it('LHS: complicated RHS', () => {
+    const json = fs.readFileSync('./test/samples/issue31.json', 'utf-8');
+    const { data, changed } = jf(json);
+    expect(changed).toBeTruthy();
+    expect(data).toEqual({
+      something: 'string:string'
+    });
+  });
 });
 
 describe('fix trailing characters', () => {
@@ -382,14 +391,5 @@ describe('returns the json as fixed string', () => {
     const { data } = jf(json, { parse: false });
     expect(typeof data).toBe('string');
     expect(typeof JSON.parse(data)).toBe('object');
-  });
-});
-
-test('issue 31', () => {
-  const json = fs.readFileSync('./test/samples/issue31.json', 'utf-8');
-  const { data, changed } = jf(json);
-  expect(changed).toBeTruthy();
-  expect(data).toEqual({
-    something: 'string:string'
   });
 });
