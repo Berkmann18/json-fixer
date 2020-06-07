@@ -1,3 +1,11 @@
+## [1.4.2](https://github.com/Berkmann18/json-fixer/compare/v1.4.1...v1.4.2) (2020-06-07)
+
+
+### Bug Fixes
+
+* **fixer:** wrongly added missing quote ([2ee5e4f](https://github.com/Berkmann18/json-fixer/commit/2ee5e4f299b6d654a3066ed43066196054adaee9)), closes [#31](https://github.com/Berkmann18/json-fixer/issues/31)
+* **lockfile:** security fix ([cade206](https://github.com/Berkmann18/json-fixer/commit/cade206a43f05ebd3c16f96c2d44e22c368277b8))
+
 ## [1.4.1](https://github.com/Berkmann18/json-fixer/compare/v1.4.0...v1.4.1) (2020-04-04)
 
 
