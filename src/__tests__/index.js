@@ -384,3 +384,12 @@ describe('returns the json as fixed string', () => {
     expect(typeof JSON.parse(data)).toBe('object');
   });
 });
+
+test('issue 31', () => {
+  const json = fs.readFileSync('./test/samples/issue31.json', 'utf-8');
+  const { data, changed } = jf(json);
+  expect(changed).toBeTruthy();
+  expect(data).toEqual({
+    something: 'string:string'
+  });
+});
