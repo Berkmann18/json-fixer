@@ -33,7 +33,8 @@
     "generate": "pegjs src/json.pegjs",
     "prepare": "snyk protect",
     "sr": "semantic-release",
-    "build": "echo 0"
+    "build": "echo 0",
+    "sandbox": "node test/sandbox"
   },
   "husky": {
     "hooks": {
