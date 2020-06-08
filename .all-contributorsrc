@@ -60,7 +60,17 @@
         "bug",
         "code"
       ]
+    },
+    {
+      "login": "andre-paulo98",
+      "name": "André Paulo",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/19685105?v=4",
+      "profile": "https://andrepaulo.me",
+      "contributions": [
+        "bug"
+      ]
     }
   ],
-  "contributorsPerLine": 7
+  "contributorsPerLine": 7,
+  "skipCi": true
 }
