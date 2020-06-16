@@ -73,7 +73,7 @@ const fixMissingQuotes = ({ start, fixedData, verbose }) => {
   // console.log(`targetLine=${targetLine}\nbrokenLine=\`${brokenLine}\``,)
   const NO_RH_QUOTES = /(":\s*)([^,{}[\]]+)/g;
   const NO_LH_QUOTES = /(^[^"]\S[\S\s]+)(:\s*["\w{[])/g;
-  const LH = NO_LH_QUOTES.test(brokenLine);
+  // const LH = NO_LH_QUOTES.test(brokenLine);
   const RH = NO_RH_QUOTES.test(brokenLine);
   // console.log('NO_QUOTE L/R=', LH, RH);
   let fixedLine = RH ? brokenLine.replace(NO_RH_QUOTES, '$1"$2"') : brokenLine;
