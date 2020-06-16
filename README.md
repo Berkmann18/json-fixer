@@ -76,6 +76,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://github.com/Bkucera"><img src="https://avatars0.githubusercontent.com/u/14625260?v=4" width="100px;" alt=""/><br /><sub><b>Ben Kucera</b></sub></a><br /><a href="https://github.com/Berkmann18/json-fixer/commits?author=Bkucera" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/SvetozarMateev"><img src="https://avatars3.githubusercontent.com/u/25162335?v=4" width="100px;" alt=""/><br /><sub><b>Svetozar Mateev</b></sub></a><br /><a href="https://github.com/Berkmann18/json-fixer/issues?q=author%3ASvetozarMateev" title="Bug reports">🐛</a> <a href="https://github.com/Berkmann18/json-fixer/commits?author=SvetozarMateev" title="Code">💻</a></td>
     <td align="center"><a href="https://andrepaulo.me"><img src="https://avatars1.githubusercontent.com/u/19685105?v=4" width="100px;" alt=""/><br /><sub><b>André Paulo</b></sub></a><br /><a href="https://github.com/Berkmann18/json-fixer/issues?q=author%3Aandre-paulo98" title="Bug reports">🐛</a></td>
+    <td align="center"><a href="https://www.linkedin.com/in/erkinmatkaziev/"><img src="https://avatars2.githubusercontent.com/u/22586805?v=4" width="100px;" alt=""/><br /><sub><b>Erkin Matkaziev</b></sub></a><br /><a href="https://github.com/Berkmann18/json-fixer/issues?q=author%3AErkin97" title="Bug reports">🐛</a></td>
   </tr>
 </table>
 
