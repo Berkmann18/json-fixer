@@ -14,4 +14,9 @@ const verboseLog = ({ verbose = false, lines = [], err }) => {
   console.dir(err);
 };
 
-module.exports = { psw, removeLinebreak, replaceChar, verboseLog };
+const curlyBracesIncluded = (line) => {
+  const l = line.trim();
+  return l.startsWith('{') && l.endsWith('}');
+};
+
+module.exports = { psw, removeLinebreak, replaceChar, verboseLog, curlyBracesIncluded };

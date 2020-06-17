@@ -1,5 +1,5 @@
 const chalk = require('chalk');
-const { psw, removeLinebreak, replaceChar } = require('./utils');
+const { psw, removeLinebreak, replaceChar, curlyBracesIncluded } = require('./utils');
 const { parse } = require('./json.pjs');
 
 const fixExtraChar = ({ fixedData, verbose, targetLine }) => {
@@ -69,13 +69,14 @@ const fixMissingQuotes = ({ start, fixedData, verbose }) => {
   /* eslint-disable security/detect-object-injection */
   if (verbose) psw(chalk.magenta('Missing quotes'));
   const targetLine = start.line - 1;
-  const brokenLine = removeLinebreak(fixedData[targetLine]);
-  // console.log(`targetLine=${targetLine}\nbrokenLine=\`${brokenLine}\``,)
-  const NO_RH_QUOTES = /(":\s*)([^,{}[\]]+)/g;
-  const NO_LH_QUOTES = /(^[^"]\S[\S\s]+)(:\s*["\w{[])/g;
-  // const LH = NO_LH_QUOTES.test(brokenLine);
+  let brokenLine = removeLinebreak(fixedData[targetLine]);
+  const seCurlyBraces = curlyBracesIncluded(brokenLine);
+  if (seCurlyBraces) {
+    brokenLine = brokenLine.substring(1, brokenLine.length - 1);
+  }
+  const NO_RH_QUOTES = /(":\s*)([^,{}[\]]+)/;
+  const NO_LH_QUOTES = /(^[^"]\S[\S\s]+)(:\s*["\w{[])/;
   const RH = NO_RH_QUOTES.test(brokenLine);
-  // console.log('NO_QUOTE L/R=', LH, RH);
   let fixedLine = RH ? brokenLine.replace(NO_RH_QUOTES, '$1"$2"') : brokenLine;
   const leftSpace = fixedLine.match(/^(\s+)/);
   fixedLine = fixedLine.trimStart();
@@ -85,6 +86,10 @@ const fixMissingQuotes = ({ start, fixedData, verbose }) => {
     fixedLine = `"${leftHand}"${fixedLine.substring(firstColon)}`;
   }
   fixedData[targetLine] = `${leftSpace === null ? '' : leftSpace[0]}${fixedLine}`;
+  if (seCurlyBraces) {
+    fixedData[targetLine] = `{${fixedData[targetLine]}}`;
+  }
+
   return fixedData;
 };
 
