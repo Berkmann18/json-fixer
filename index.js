@@ -1,6 +1,6 @@
 const chalk = require('chalk');
 const { parse } = require('./src/json.pjs');
-const { psw, removeLinebreak } = require('./src/utils');
+const { psw, removeLinebreak, verboseLog } = require('./src/utils');
 const fixer = require('./src/fixer');
 
 let fixRounds = 0;
@@ -57,18 +57,8 @@ const comment = (err) => err.found === '/';
 
 const ops = (err) => ['+', '-', '*', '/', '>', '<', '~', '|', '&', '^'].includes(err.found);
 
-/*eslint-disable no-console */
-const fixJson = (err, data, options) => {
-  ++fixRounds;
-  const lines = data.split('\n');
-  const verbose = options.verbose;
-  if (verbose) {
-    psw('Data:');
-    lines.forEach((l, i) => psw(`${chalk.yellow(i)} ${l}`));
-    psw(chalk.red('err='));
-    console.dir(err);
-  }
-  const start = err.location.start;
+const runFixer = ({ verbose, lines, start, err }) => {
+  /* eslint-disable security/detect-object-injection */
   let fixedData = [...lines];
   const targetLine = start.line - 2;
 
@@ -93,6 +83,19 @@ const fixJson = (err, data, options) => {
   } else if (ops(err)) {
     fixedData = fixer.fixOpConcat({ start, fixedData, verbose });
   } else throw new Error(`Unsupported issue: ${err.message} (please open an issue at the repo)`);
+  return fixedData;
+};
+
+/*eslint-disable no-console */
+const fixJson = (err, data, options) => {
+  ++fixRounds;
+  const lines = data.split('\n');
+  const verbose = options.verbose;
+  verboseLog({ verbose, lines, err });
+
+  const start = err.location.start;
+  const fixedData = runFixer({ verbose, lines, start, err });
+
   return doubleCheck(fixedData.join('\n'), options);
 };
 /*eslint-enable no-console */

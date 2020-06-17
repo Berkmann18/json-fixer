@@ -94,6 +94,24 @@ describe('fix missing quotes', () => {
       something: 'string:string'
     });
   });
+
+  it('Both sides', () => {
+    const json = fs.readFileSync('./test/samples/doublyMissingQuotes.json', 'utf-8');
+    const { data, changed } = jf(json);
+    expect(changed).toBeTruthy();
+    expect(data).toEqual({
+      field: 'value'
+    });
+  });
+
+  it('Both sides (minified)', () => {
+    const json = fs.readFileSync('./test/samples/doublyMissingQuotesMin.json', 'utf-8');
+    const { data, changed } = jf(json);
+    expect(changed).toBeTruthy();
+    expect(data).toEqual({
+      field: 'value'
+    });
+  });
 });
 
 describe('fix trailing characters', () => {
