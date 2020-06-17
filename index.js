@@ -73,7 +73,6 @@ const runFixer = ({ verbose, lines, start, err }) => {
   } else if (singleQuotes(err)) {
     fixedData = fixer.fixSingleQuotes({ start, fixedData, verbose });
   } else if (missingQuotes(err)) {
-    // console.log('start=', start);
     fixedData = fixer.fixMissingQuotes({ start, fixedData, verbose });
   } else if (notSquare(err)) {
     fixedData = fixer.fixSquareBrackets({ start, fixedData, verbose, targetLine });

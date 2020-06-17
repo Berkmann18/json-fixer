@@ -95,7 +95,7 @@ describe('fix missing quotes', () => {
     });
   });
 
-  /* it('Both sides', () => {
+  it('Both sides', () => {
     const json = fs.readFileSync('./test/samples/doublyMissingQuotes.json', 'utf-8');
     const { data, changed } = jf(json);
     expect(changed).toBeTruthy();
@@ -111,7 +111,7 @@ describe('fix missing quotes', () => {
     expect(data).toEqual({
       field: 'value'
     });
-  }); */
+  });
 });
 
 describe('fix trailing characters', () => {
