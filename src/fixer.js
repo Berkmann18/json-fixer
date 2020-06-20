@@ -1,5 +1,6 @@
 const chalk = require('chalk');
 const { psw, removeLinebreak, replaceChar, curlyBracesIncluded } = require('./utils');
+const { quotify, numberify, baseNumify } = require('./transform');
 const { parse } = require('./json.pjs');
 
 const fixExtraChar = ({ fixedData, verbose, targetLine }) => {
@@ -30,35 +31,17 @@ const fixTrailingChar = ({ start, fixedData, verbose }) => {
   const fixedLine = brokenLine.replace(/(":\s*)[.,](\d*)/g, '$10.$2');
   const unquotedWord = /(":\s*)(\S*)/g.exec(fixedLine);
   if (unquotedWord) {
-    // TODO Refactor this part out
     const NN = Number.isNaN(Number(unquotedWord[2]));
-    if (NN && !/([xbo][0-9a-fA-F]+)/g.test(unquotedWord[2])) {
-      if (verbose) psw(chalk.magenta('Adding quotes...'));
-      fixedData[targetLine] = fixedLine.replace(/(":\s*)(\S*)/g, '$1"$2"');
-      return fixedData;
+    if (NN && !/([xbo][0-9a-fA-F]+)/.test(unquotedWord[2])) {
+      return quotify({ fixedData, targetLine, fixedLine, verbose });
     }
-    if (!NN && !/\0([xbo][0-9a-fA-F]+)/g.test(unquotedWord[2])) {
-      if (verbose) {
-        psw(
-          chalk.cyan(
-            "Found a non base-10 number and since JSON doesn't support those numbers types. I will turn it into a base-10 number to keep the structure intact"
-          )
-        );
-      }
-      fixedData[targetLine] = fixedLine.replace(unquotedWord[2], Number(unquotedWord[2]));
-      return fixedData;
+    if (!NN && !/\0([xbo][0-9a-fA-F]+)/.test(unquotedWord[2])) {
+      return numberify({ fixedData, targetLine, fixedLine, unquotedWord, verbose });
     }
   }
   let baseNumber = fixedLine.replace(/(":\s*)([xbo][0-9a-fA-F]*)/g, '$1"0$2"');
   if (baseNumber !== fixedLine) {
-    if (verbose) {
-      psw(
-        chalk.cyan(
-          "Found a non base-10 number and since JSON doesn't support those numbers types. I will turn it into a base-10 number to keep the structure intact"
-        )
-      );
-    }
-    baseNumber = baseNumber.replace(/"(0[xbo][0-9a-fA-F]*)"/g, (_, num) => Number(num)); //base-(16|2|8) -> base-10
+    baseNumber = baseNumify({ baseNumber, verbose });
   }
 
   fixedData[targetLine] = baseNumber;
@@ -132,18 +115,21 @@ const fixCurlyBrackets = ({ fixedData, verbose, targetLine }) => {
   return fixedData;
 };
 
+const fixMultilineComment = ({ fixedData, targetLine }) => {
+  let end = targetLine + 1;
+  while (end <= fixedData.length && !fixedData[end].includes('*/')) ++end;
+  for (let i = targetLine + 1; i <= end; ++i) fixedData[i] = '#RM';
+  fixedData[targetLine] = fixedData[targetLine].replace(/\s*\/\*+.*/g, '#RM');
+  return fixedData.filter((l) => l !== '#RM');
+};
+
 const fixComment = ({ start, fixedData, verbose }) => {
   if (verbose) psw(chalk.magenta('Comment'));
   const targetLine = start.line - 1;
   const brokenLine = removeLinebreak(fixedData[targetLine]);
   const fixedLine = brokenLine.replace(/(\s*)(\/\/.*|\/\*+.*?\*+\/)/g, '');
   if (fixedLine.includes('/*')) {
-    //Multi-line comment
-    let end = targetLine + 1;
-    while (end <= fixedData.length && !fixedData[end].includes('*/')) ++end;
-    for (let i = targetLine + 1; i <= end; ++i) fixedData[i] = '#RM';
-    fixedData[targetLine] = fixedData[targetLine].replace(/\s*\/\*+.*/g, '#RM');
-    return fixedData.filter((l) => l !== '#RM');
+    return fixMultilineComment({ fixedData, targetLine });
   }
   fixedData[targetLine] = fixedLine;
   return fixedData;
@@ -159,7 +145,7 @@ const fixOpConcat = ({ start, fixedData, verbose }) => {
   const targetLine = start.line - 1;
   const brokenLine = removeLinebreak(fixedData[targetLine]);
   const fixedLine = brokenLine
-    /* eslint-disable no-eval */
+    /* eslint-disable no-eval, security/detect-eval-with-expression */
     .replace(
       /(\d+)\s*([+\-*/%&|^><]|\*\*|>{2,3}|<<|[=!><]=|[=!]==)\s*(\d+)\s*([+\-*/%&|^><]|\*\*|>{2,3}|<<|[=!><]=|[=!]==)*\s*(\d+)*/g,
       (eq) => eval(eq)

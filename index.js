@@ -100,6 +100,15 @@ const fixJson = (err, data, options) => {
 };
 /*eslint-enable no-console */
 
+const fixingTime = ({ data, err, optionsCopy }) => {
+  fixRounds = 0;
+  setFixThreshold(data);
+  return {
+    data: fixJson(err, data, optionsCopy),
+    changed: true
+  };
+};
+
 /**
  * @param {string} data JSON string data to check (and fix).
  * @param {{verbose:boolean, parse:boolean}} options configuration object which specifies verbosity and whether the object should be parsed or returned as fixed string
@@ -128,12 +137,7 @@ const checkJson = (data, options) => {
       };
     }
   } catch (err) {
-    fixRounds = 0;
-    setFixThreshold(data);
-    return {
-      data: fixJson(err, data, optionsCopy),
-      changed: true
-    };
+    return fixingTime({ data, err, optionsCopy });
   }
 };
 
