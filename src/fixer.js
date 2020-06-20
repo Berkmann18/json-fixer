@@ -30,14 +30,13 @@ const fixTrailingChar = ({ start, fixedData, verbose }) => {
   const brokenLine = removeLinebreak(fixedData[targetLine]);
   const fixedLine = brokenLine.replace(/(":\s*)[.,](\d*)/g, '$10.$2');
   const unquotedWord = /(":\s*)(\S*)/g.exec(fixedLine);
-  if (unquotedWord) {
-    const NN = Number.isNaN(Number(unquotedWord[2]));
-    if (NN && !/([xbo][0-9a-fA-F]+)/.test(unquotedWord[2])) {
-      return quotify({ fixedData, targetLine, fixedLine, verbose });
-    }
-    if (!NN && !/\0([xbo][0-9a-fA-F]+)/.test(unquotedWord[2])) {
-      return numberify({ fixedData, targetLine, fixedLine, unquotedWord, verbose });
-    }
+  // if (unquotedWord === null) throw new Error('Unquoted word expected!');
+  const NN = Number.isNaN(Number(unquotedWord[2]));
+  if (NN && !/([xbo][0-9a-fA-F]+)/.test(unquotedWord[2])) {
+    return quotify({ fixedData, targetLine, fixedLine, verbose });
+  }
+  if (!NN && !/\0([xbo][0-9a-fA-F]+)/.test(unquotedWord[2])) {
+    return numberify({ fixedData, targetLine, fixedLine, unquotedWord, verbose });
   }
   let baseNumber = fixedLine.replace(/(":\s*)([xbo][0-9a-fA-F]*)/g, '$1"0$2"');
   if (baseNumber !== fixedLine) {
