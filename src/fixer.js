@@ -57,7 +57,7 @@ const fixMissingQuotes = ({ start, fixedData, verbose }) => {
     brokenLine = brokenLine.substring(1, brokenLine.length - 1);
   }
   const NO_RH_QUOTES = /(":\s*)([^,{}[\]]+)/;
-  const NO_LH_QUOTES = /(^[^"]\S[\S\s]+)(:\s*["\w{[])/;
+  const NO_LH_QUOTES = /(^[^"][\S\s]*)(:\s*["\w{[])/;
   const RH = NO_RH_QUOTES.test(brokenLine);
   let fixedLine = RH ? brokenLine.replace(NO_RH_QUOTES, '$1"$2"') : brokenLine;
   const leftSpace = fixedLine.match(/^(\s+)/);
