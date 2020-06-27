@@ -10,6 +10,7 @@
 
 # json-fixer
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/81690e927e4f49db939033daae75b2eb)](https://app.codacy.com/manual/maxieberkmann/json-fixer?utm_source=github.com&utm_medium=referral&utm_content=Berkmann18/json-fixer&utm_campaign=Badge_Grade_Dashboard)
 [![NPM](https://nodei.co/npm/json-fixer.png)](https://nodei.co/npm/json-fixer/)
 
 [![GitHub package version](https://img.shields.io/github/package-json/v/Berkmann18/json-fixer.svg)](https://github.com/Berkmann18/json-fixer)
