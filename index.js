@@ -37,9 +37,7 @@ const extraChar = (err) => err.expected[0].type === 'other' && ['}', ']'].includ
 
 const trailingChar = (err) => {
   const literal = err.expected[0].type === 'literal' && err.expected[0].text !== ':';
-  return (
-    ['.', ',', 'x', 'b', 'o'].includes(err.found) && (err.expected[0].type === 'other' || literal)
-  );
+  return ['.', ',', 'x', 'b', 'o'].includes(err.found) && literal;
 };
 
 const missingChar = (err) => err.expected[0].text === ',' && ['"', '[', '{'].includes(err.found);
@@ -100,6 +98,15 @@ const fixJson = (err, data, options) => {
 };
 /*eslint-enable no-console */
 
+const fixingTime = ({ data, err, optionsCopy }) => {
+  fixRounds = 0;
+  setFixThreshold(data);
+  return {
+    data: fixJson(err, data, optionsCopy),
+    changed: true
+  };
+};
+
 /**
  * @param {string} data JSON string data to check (and fix).
  * @param {{verbose:boolean, parse:boolean}} options configuration object which specifies verbosity and whether the object should be parsed or returned as fixed string
@@ -128,12 +135,7 @@ const checkJson = (data, options) => {
       };
     }
   } catch (err) {
-    fixRounds = 0;
-    setFixThreshold(data);
-    return {
-      data: fixJson(err, data, optionsCopy),
-      changed: true
-    };
+    return fixingTime({ data, err, optionsCopy });
   }
 };
 
