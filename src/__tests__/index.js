@@ -86,6 +86,33 @@ describe('fix missing quotes', () => {
     });
   });
 
+  it('LHS: 2 chars', () => {
+    const json = fs.readFileSync('./test/samples/lefty2.json', 'utf-8');
+    const { data, changed } = jf(json);
+    expect(changed).toBeTruthy();
+    expect(data).toStrictEqual({
+      ix: 1
+    });
+  });
+
+  it('LHS: 1 char', () => {
+    const json = fs.readFileSync('./test/samples/lefty1.json', 'utf-8');
+    const { data, changed } = jf(json);
+    expect(changed).toBeTruthy();
+    expect(data).toStrictEqual({
+      t: 42
+    });
+  });
+
+  it('LHS: not an octet', () => {
+    const json = fs.readFileSync('./test/samples/leftyO.json', 'utf-8');
+    const { data, changed } = jf(json);
+    expect(changed).toBeTruthy();
+    expect(data).toStrictEqual({
+      o: 1
+    });
+  });
+
   it('LHS: one word (verbose)', () => {
     const json = fs.readFileSync('./test/samples/noLHQuotes.json', 'utf-8');
     const { data, changed } = jf(json, { verbose: true });
