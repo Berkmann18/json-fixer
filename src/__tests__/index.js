@@ -1,20 +1,20 @@
 const fs = require('fs');
 const jf = require('../../');
 
-const shouldHaveNotChanged = (sampleName, expectedOutput, fixerOptions = {}) => {
+const exam = ({ sampleName, expectedOutput, fixerOptions = {}, expectedChange = false } = {}) => {
   // eslint-disable-next-line security/detect-non-literal-fs-filename
   const json = fs.readFileSync(`./test/samples/${sampleName}.json`, 'utf-8');
   const { data, changed } = jf(json, fixerOptions);
-  expect(changed).toBeFalsy();
+  expect(changed).toEqual(expectedChange);
   expect(data).toEqual(expectedOutput);
 };
 
+const shouldHaveNotChanged = (sampleName, expectedOutput, fixerOptions = {}) => {
+  exam({ sampleName, expectedOutput, fixerOptions });
+};
+
 const shouldHaveChanged = (sampleName, expectedOutput, fixerOptions = {}) => {
-  // eslint-disable-next-line security/detect-non-literal-fs-filename
-  const json = fs.readFileSync(`./test/samples/${sampleName}.json`, 'utf-8');
-  const { data, changed } = jf(json, fixerOptions);
-  expect(changed).toBeTruthy();
-  expect(data).toEqual(expectedOutput);
+  exam({ sampleName, expectedOutput, fixerOptions, expectedChange: true });
 };
 
 describe('keeps a correct file intact', () => {
