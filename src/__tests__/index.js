@@ -1,42 +1,8 @@
-const fs = require('fs');
-const jf = require('../../');
-
-const exam = ({ sampleName, expectedOutput, fixerOptions = {}, expectedChange = false } = {}) => {
-  // eslint-disable-next-line security/detect-non-literal-fs-filename
-  const json = fs.readFileSync(`./test/samples/${sampleName}.json`, 'utf-8');
-  const { data, changed } = jf(json, fixerOptions);
-  expect(changed).toEqual(expectedChange);
-  expect(data).toEqual(expectedOutput);
-};
-
-const shouldHaveNotChanged = (sampleName, expectedOutput, fixerOptions = {}) => {
-  exam({ sampleName, expectedOutput, fixerOptions });
-};
+const { exam } = require('../test-utils');
 
 const shouldHaveChanged = (sampleName, expectedOutput, fixerOptions = {}) => {
   exam({ sampleName, expectedOutput, fixerOptions, expectedChange: true });
 };
-
-describe('keeps a correct file intact', () => {
-  it('normal file', () => {
-    const json = fs.readFileSync('./test/samples/normal.json', 'utf-8');
-    const { data, changed } = jf(json);
-    expect(changed).toBeFalsy();
-    expect(data).toEqual({
-      name: 'sample #0',
-      type: 'JSON',
-      version: 0
-    });
-  });
-
-  it('floating points', () => {
-    shouldHaveNotChanged('fp', {
-      name: 'sample #2',
-      type: 'JSON',
-      version: 2.0
-    });
-  });
-});
 
 it('fix single quotes', () => {
   shouldHaveChanged('singleQuote', {
@@ -437,14 +403,5 @@ describe('multi rounds', () => {
       error: '3 errors',
       version: 21
     });
-  });
-});
-
-describe('returns the json as fixed string', () => {
-  it('normal file', () => {
-    const json = fs.readFileSync('./test/samples/normal.json', 'utf-8');
-    const { data } = jf(json, { parse: false });
-    expect(typeof data).toBe('string');
-    expect(typeof JSON.parse(data)).toBe('object');
   });
 });
