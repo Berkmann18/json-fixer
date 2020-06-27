@@ -21,7 +21,6 @@ describe('Inlined braces', () => {
     expect(curlyBracesIncluded('{ a: "thing }')).toBeTruthy();
   });
 
-  // TODO Add support for square brackes inclusion detection
   it('[ ... ]', () => {
     expect(curlyBracesIncluded('[ 0, 1 ]')).toBeFalsy();
   });
