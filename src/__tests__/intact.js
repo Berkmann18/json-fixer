@@ -1,5 +1,3 @@
-const { readFileSync } = require('fs');
-const jf = require('../../');
 const { exam } = require('../test-utils');
 
 describe('keeps a correct file intact', () => {
@@ -26,11 +24,14 @@ describe('keeps a correct file intact', () => {
   });
 });
 
-describe('returns the json as fixed string', () => {
-  it('normal file', () => {
-    const json = readFileSync('./test/samples/normal.json', 'utf-8');
-    const { data } = jf(json, { parse: false });
-    expect(typeof data).toBe('string');
-    expect(typeof JSON.parse(data)).toBe('object');
+test('boolean option', () => {
+  exam({
+    sampleName: 'normal',
+    expectedOutput: {
+      name: 'sample #0',
+      type: 'JSON',
+      version: 0
+    },
+    fixerOptions: true
   });
 });
