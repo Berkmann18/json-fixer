@@ -35,7 +35,7 @@
 [![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/Berkmann18/json-fixer.svg)](https://github.com/Berkmann18/json-fixer)
 
 [![BCH compliance](https://bettercodehub.com/edge/badge/Berkmann18/json-fixer?branch=master)](https://bettercodehub.com/results/Berkmann18/json-fixer)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/2a8e3e98d3bb47f29abbc3df7174675d)](https://app.codacy.com/app/maxieberkmann/json-fixer?utm_source=github.com&utm_medium=referral&utm_content=Berkmann18/json-fixer&utm_campaign=Badge_Grade_Dashboard)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/81690e927e4f49db939033daae75b2eb)](https://app.codacy.com/manual/maxieberkmann/json-fixer?utm_source=github.com&utm_medium=referral&utm_content=Berkmann18/json-fixer&utm_campaign=Badge_Grade_Dashboard)
 
 A JSON file fixer primarly focused to be used in a NodeJS file.
 
