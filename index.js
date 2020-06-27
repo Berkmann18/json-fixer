@@ -37,9 +37,7 @@ const extraChar = (err) => err.expected[0].type === 'other' && ['}', ']'].includ
 
 const trailingChar = (err) => {
   const literal = err.expected[0].type === 'literal' && err.expected[0].text !== ':';
-  return (
-    ['.', ',', 'x', 'b', 'o'].includes(err.found) && (err.expected[0].type === 'other' || literal)
-  );
+  return ['.', ',', 'x', 'b', 'o'].includes(err.found) && literal;
 };
 
 const missingChar = (err) => err.expected[0].text === ',' && ['"', '[', '{'].includes(err.found);
