@@ -1,3 +1,10 @@
+## [1.5.1](https://github.com/Berkmann18/json-fixer/compare/v1.5.0...v1.5.1) (2020-06-27)
+
+
+### Bug Fixes
+
+* security fix ([a306d58](https://github.com/Berkmann18/json-fixer/commit/a306d586dcd4ac09611adbc02a270b3bc186c8cf))
+
 # [1.5.0](https://github.com/Berkmann18/json-fixer/compare/v1.4.1...v1.5.0) (2020-06-27)
 
 
