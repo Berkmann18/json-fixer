@@ -1,6 +1,22 @@
 const fs = require('fs');
 const jf = require('../../');
 
+const shouldHaveNotChanged = (sampleName, expectedOutput, fixerOptions = {}) => {
+  // eslint-disable-next-line security/detect-non-literal-fs-filename
+  const json = fs.readFileSync(`./test/samples/${sampleName}.json`, 'utf-8');
+  const { data, changed } = jf(json, fixerOptions);
+  expect(changed).toBeFalsy();
+  expect(data).toEqual(expectedOutput);
+};
+
+const shouldHaveChanged = (sampleName, expectedOutput, fixerOptions = {}) => {
+  // eslint-disable-next-line security/detect-non-literal-fs-filename
+  const json = fs.readFileSync(`./test/samples/${sampleName}.json`, 'utf-8');
+  const { data, changed } = jf(json, fixerOptions);
+  expect(changed).toBeTruthy();
+  expect(data).toEqual(expectedOutput);
+};
+
 describe('keeps a correct file intact', () => {
   it('normal file', () => {
     const json = fs.readFileSync('./test/samples/normal.json', 'utf-8');
@@ -14,10 +30,7 @@ describe('keeps a correct file intact', () => {
   });
 
   it('floating points', () => {
-    const json = fs.readFileSync('./test/samples/fp.json', 'utf-8');
-    const { data, changed } = jf(json);
-    expect(changed).toBeFalsy();
-    expect(data).toEqual({
+    shouldHaveNotChanged('fp', {
       name: 'sample #2',
       type: 'JSON',
       version: 2.0
@@ -26,10 +39,7 @@ describe('keeps a correct file intact', () => {
 });
 
 it('fix single quotes', () => {
-  const json = fs.readFileSync('./test/samples/singleQuote.json', 'utf-8');
-  const { data, changed } = jf(json);
-  expect(changed).toBeTruthy();
-  expect(data).toStrictEqual({
+  shouldHaveChanged('singleQuote', {
     name: 'sample #1',
     type: 'JSON',
     error: 'single quote',
@@ -39,10 +49,7 @@ it('fix single quotes', () => {
 
 describe('fix missing quotes', () => {
   it('RHS: one word', () => {
-    const json = fs.readFileSync('./test/samples/noQuotes.json', 'utf-8');
-    const { data, changed } = jf(json);
-    expect(changed).toBeTruthy();
-    expect(data).toStrictEqual({
+    shouldHaveChanged('noQuotes', {
       name: 'sample #10',
       type: 'JSON',
       error: 'missing quotes',
@@ -51,22 +58,20 @@ describe('fix missing quotes', () => {
   });
 
   it('RHS: one word (verbose)', () => {
-    const json = fs.readFileSync('./test/samples/noQuotes.json', 'utf-8');
-    const { data, changed } = jf(json, { verbose: true });
-    expect(changed).toBeTruthy();
-    expect(data).toStrictEqual({
-      name: 'sample #10',
-      type: 'JSON',
-      error: 'missing quotes',
-      version: 'one'
-    });
+    shouldHaveChanged(
+      'noQuotes',
+      {
+        name: 'sample #10',
+        type: 'JSON',
+        error: 'missing quotes',
+        version: 'one'
+      },
+      { verbose: true }
+    );
   });
 
   it('RHS: several words', () => {
-    const json = fs.readFileSync('./test/samples/missingQuotes.json', 'utf-8');
-    const { data, changed } = jf(json);
-    expect(changed).toBeTruthy();
-    expect(data).toStrictEqual({
+    shouldHaveChanged('missingQuotes', {
       name: 'sample #11',
       type: 'JSON',
       error: 'missing quotes',
@@ -75,10 +80,7 @@ describe('fix missing quotes', () => {
   });
 
   it('LHS: one word', () => {
-    const json = fs.readFileSync('./test/samples/noLHQuotes.json', 'utf-8');
-    const { data, changed } = jf(json);
-    expect(changed).toBeTruthy();
-    expect(data).toStrictEqual({
+    shouldHaveChanged('noLHQuotes', {
       name: 'sample #13',
       type: 'JSON',
       error: 'missing quotes',
@@ -87,49 +89,38 @@ describe('fix missing quotes', () => {
   });
 
   it('LHS: 2 chars', () => {
-    const json = fs.readFileSync('./test/samples/lefty2.json', 'utf-8');
-    const { data, changed } = jf(json);
-    expect(changed).toBeTruthy();
-    expect(data).toStrictEqual({
+    shouldHaveChanged('lefty2', {
       ix: 1
     });
   });
 
   it('LHS: 1 char', () => {
-    const json = fs.readFileSync('./test/samples/lefty1.json', 'utf-8');
-    const { data, changed } = jf(json);
-    expect(changed).toBeTruthy();
-    expect(data).toStrictEqual({
+    shouldHaveChanged('lefty1', {
       t: 42
     });
   });
 
   it('LHS: not an octet', () => {
-    const json = fs.readFileSync('./test/samples/leftyO.json', 'utf-8');
-    const { data, changed } = jf(json);
-    expect(changed).toBeTruthy();
-    expect(data).toStrictEqual({
+    shouldHaveChanged('leftyO', {
       o: 1
     });
   });
 
   it('LHS: one word (verbose)', () => {
-    const json = fs.readFileSync('./test/samples/noLHQuotes.json', 'utf-8');
-    const { data, changed } = jf(json, { verbose: true });
-    expect(changed).toBeTruthy();
-    expect(data).toStrictEqual({
-      name: 'sample #13',
-      type: 'JSON',
-      error: 'missing quotes',
-      version: 'a string'
-    });
+    shouldHaveChanged(
+      'noLHQuotes',
+      {
+        name: 'sample #13',
+        type: 'JSON',
+        error: 'missing quotes',
+        version: 'a string'
+      },
+      { verbose: true }
+    );
   });
 
   it('LHS: several words', () => {
-    const json = fs.readFileSync('./test/samples/missingLHQuotes.json', 'utf-8');
-    const { data, changed } = jf(json);
-    expect(changed).toBeTruthy();
-    expect(data).toStrictEqual({
+    shouldHaveChanged('missingLHQuotes', {
       name: 'sample #14',
       type: 'JSON',
       error: 'missing quotes',
@@ -138,28 +129,19 @@ describe('fix missing quotes', () => {
   });
 
   it('LHS: complicated RHS', () => {
-    const json = fs.readFileSync('./test/samples/issue31.json', 'utf-8');
-    const { data, changed } = jf(json);
-    expect(changed).toBeTruthy();
-    expect(data).toEqual({
+    shouldHaveChanged('issue31', {
       something: 'string:string'
     });
   });
 
   it('Both sides', () => {
-    const json = fs.readFileSync('./test/samples/doublyMissingQuotes.json', 'utf-8');
-    const { data, changed } = jf(json);
-    expect(changed).toBeTruthy();
-    expect(data).toEqual({
+    shouldHaveChanged('doublyMissingQuotes', {
       field: 'value'
     });
   });
 
   it('Both sides (minified)', () => {
-    const json = fs.readFileSync('./test/samples/doublyMissingQuotesMin.json', 'utf-8');
-    const { data, changed } = jf(json);
-    expect(changed).toBeTruthy();
-    expect(data).toEqual({
+    shouldHaveChanged('doublyMissingQuotesMin', {
       field: 'value'
     });
   });
@@ -167,10 +149,7 @@ describe('fix missing quotes', () => {
 
 describe('fix trailing characters', () => {
   it('dots', () => {
-    const json = fs.readFileSync('./test/samples/trailingDot.json', 'utf-8');
-    const { data, changed } = jf(json);
-    expect(changed).toBeTruthy();
-    expect(data).toEqual({
+    shouldHaveChanged('trailingDot', {
       name: 'sample #3',
       type: 'JSON',
       error: 'trailing dot',
@@ -179,10 +158,7 @@ describe('fix trailing characters', () => {
   });
 
   it('commas', () => {
-    const json = fs.readFileSync('./test/samples/trailingComma.json', 'utf-8');
-    const { data, changed } = jf(json);
-    expect(changed).toBeTruthy();
-    expect(data).toEqual({
+    shouldHaveChanged('trailingComma', {
       name: 'sample #6',
       type: 'JSON',
       error: 'trailing comma',
@@ -191,10 +167,7 @@ describe('fix trailing characters', () => {
   });
 
   it('chars', () => {
-    const json = fs.readFileSync('./test/samples/trailingChar.json', 'utf-8');
-    const { data, changed } = jf(json);
-    expect(changed).toBeTruthy();
-    expect(data).toEqual([
+    shouldHaveChanged('trailingChar', [
       {
         test1: '1',
         test2: {
@@ -206,10 +179,7 @@ describe('fix trailing characters', () => {
   });
 
   it('hex\'s "x"', () => {
-    const json = fs.readFileSync('./test/samples/x.json', 'utf-8');
-    const { data, changed } = jf(json);
-    expect(changed).toBeTruthy();
-    expect(data).toEqual({
+    shouldHaveChanged('x', {
       name: 'sample #7',
       type: 'JSON',
       error: 'trailing x',
@@ -218,22 +188,20 @@ describe('fix trailing characters', () => {
   });
 
   it('hex\'s "x" (verbose)', () => {
-    const json = fs.readFileSync('./test/samples/x.json', 'utf-8');
-    const { data, changed } = jf(json, { verbose: true });
-    expect(changed).toBeTruthy();
-    expect(data).toEqual({
-      name: 'sample #7',
-      type: 'JSON',
-      error: 'trailing x',
-      version: 0x7
-    });
+    shouldHaveChanged(
+      'x',
+      {
+        name: 'sample #7',
+        type: 'JSON',
+        error: 'trailing x',
+        version: 0x7
+      },
+      { verbose: true }
+    );
   });
 
   it('hex\'s "0x"', () => {
-    const json = fs.readFileSync('./test/samples/hex.json', 'utf-8');
-    const { data, changed } = jf(json);
-    expect(changed).toBeTruthy();
-    expect(data).toEqual({
+    shouldHaveChanged('hex', {
       name: 'sample #22',
       type: 'JSON',
       error: 'hex number',
@@ -242,22 +210,20 @@ describe('fix trailing characters', () => {
   });
 
   it('hex\'s "0x" (verbose)', () => {
-    const json = fs.readFileSync('./test/samples/hex.json', 'utf-8');
-    const { data, changed } = jf(json, { verbose: true });
-    expect(changed).toBeTruthy();
-    expect(data).toEqual({
-      name: 'sample #22',
-      type: 'JSON',
-      error: 'hex number',
-      version: 0x16
-    });
+    shouldHaveChanged(
+      'hex',
+      {
+        name: 'sample #22',
+        type: 'JSON',
+        error: 'hex number',
+        version: 0x16
+      },
+      { verbose: true }
+    );
   });
 
   it('binary\'s "b"', () => {
-    const json = fs.readFileSync('./test/samples/b.json', 'utf-8');
-    const { data, changed } = jf(json);
-    expect(changed).toBeTruthy();
-    expect(data).toEqual({
+    shouldHaveChanged('b', {
       name: 'sample #8',
       type: 'JSON',
       error: 'trailing b',
@@ -266,10 +232,7 @@ describe('fix trailing characters', () => {
   });
 
   it('binary\'s "0b"', () => {
-    const json = fs.readFileSync('./test/samples/bin.json', 'utf-8');
-    const { data, changed } = jf(json);
-    expect(changed).toBeTruthy();
-    expect(data).toEqual({
+    shouldHaveChanged('bin', {
       name: 'sample #23',
       type: 'JSON',
       error: 'binary number',
@@ -278,10 +241,7 @@ describe('fix trailing characters', () => {
   });
 
   it('octal\'s "o"', () => {
-    const json = fs.readFileSync('./test/samples/o.json', 'utf-8');
-    const { data, changed } = jf(json);
-    expect(changed).toBeTruthy();
-    expect(data).toEqual({
+    shouldHaveChanged('o', {
       name: 'sample #9',
       type: 'JSON',
       error: 'trailing o',
@@ -290,10 +250,7 @@ describe('fix trailing characters', () => {
   });
 
   it('octal\'s "0o"', () => {
-    const json = fs.readFileSync('./test/samples/oct.json', 'utf-8');
-    const { data, changed } = jf(json);
-    expect(changed).toBeTruthy();
-    expect(data).toEqual({
+    shouldHaveChanged('oct', {
       name: 'sample #24',
       type: 'JSON',
       error: 'octal number',
@@ -303,10 +260,7 @@ describe('fix trailing characters', () => {
 });
 
 it('fix extra characters', () => {
-  const json = fs.readFileSync('./test/samples/extraChar.json', 'utf-8');
-  const { data, changed } = jf(json);
-  expect(changed).toBeTruthy();
-  expect(data).toEqual({
+  shouldHaveChanged('extraChar', {
     name: 'sample #4',
     type: 'JSON',
     error: 'trailing error',
@@ -315,10 +269,7 @@ it('fix extra characters', () => {
 });
 
 it('fix missing commas', () => {
-  const json = fs.readFileSync('./test/samples/missing.json', 'utf-8');
-  const { data, changed } = jf(json);
-  expect(changed).toBeTruthy();
-  expect(data).toEqual({
+  shouldHaveChanged('missing', {
     name: 'sample #5',
     type: 'JSON',
     error: 'missing comma',
@@ -328,10 +279,7 @@ it('fix missing commas', () => {
 
 describe('fix wrong brackets', () => {
   it('square brackets', () => {
-    const json = fs.readFileSync('./test/samples/notSquare.json', 'utf-8');
-    const { data, changed } = jf(json);
-    expect(changed).toBeTruthy();
-    expect(data).toEqual({
+    shouldHaveChanged('notSquare', {
       name: 'sample #12',
       error: 'wrong brackets',
       info: {
@@ -342,24 +290,22 @@ describe('fix wrong brackets', () => {
   });
 
   it('square brackets (verbose)', () => {
-    const json = fs.readFileSync('./test/samples/notSquare.json', 'utf-8');
-    const { data, changed } = jf(json, { verbose: true });
-    expect(changed).toBeTruthy();
-    expect(data).toEqual({
-      name: 'sample #12',
-      error: 'wrong brackets',
-      info: {
-        type: 'JSON',
-        version: 12
-      }
-    });
+    shouldHaveChanged(
+      'notSquare',
+      {
+        name: 'sample #12',
+        error: 'wrong brackets',
+        info: {
+          type: 'JSON',
+          version: 12
+        }
+      },
+      { verbose: true }
+    );
   });
 
   it('curly brackets', () => {
-    const json = fs.readFileSync('./test/samples/notCurly.json', 'utf-8');
-    const { data, changed } = jf(json);
-    expect(changed).toBeTruthy();
-    expect(data).toEqual({
+    shouldHaveChanged('notCurly', {
       name: 'sample #15',
       error: 'wrong brackets',
       info: ['one', 'two']
@@ -367,23 +313,21 @@ describe('fix wrong brackets', () => {
   });
 
   it('curly brackets (verbose)', () => {
-    const json = fs.readFileSync('./test/samples/notCurly.json', 'utf-8');
-    const { data, changed } = jf(json, { verbose: true });
-    expect(changed).toBeTruthy();
-    expect(data).toEqual({
-      name: 'sample #15',
-      error: 'wrong brackets',
-      info: ['one', 'two']
-    });
+    shouldHaveChanged(
+      'notCurly',
+      {
+        name: 'sample #15',
+        error: 'wrong brackets',
+        info: ['one', 'two']
+      },
+      { verbose: true }
+    );
   });
 });
 
 describe('comments', () => {
   it('inline line', () => {
-    const json = fs.readFileSync('./test/samples/comment.json', 'utf-8');
-    const { data, changed } = jf(json);
-    expect(changed).toBeTruthy();
-    expect(data).toEqual({
+    shouldHaveChanged('comment', {
       name: 'sample #16',
       type: 'JSON',
       error: 'comment',
@@ -392,10 +336,7 @@ describe('comments', () => {
   });
 
   it('single line', () => {
-    const json = fs.readFileSync('./test/samples/smComment.json', 'utf-8');
-    const { data, changed } = jf(json);
-    expect(changed).toBeTruthy();
-    expect(data).toEqual({
+    shouldHaveChanged('smComment', {
       name: 'sample #17',
       type: 'JSON',
       error: 'multi-comment',
@@ -404,10 +345,7 @@ describe('comments', () => {
   });
 
   it('multi line', () => {
-    const json = fs.readFileSync('./test/samples/multiComment.json', 'utf-8');
-    const { data, changed } = jf(json);
-    expect(changed).toBeTruthy();
-    expect(data).toEqual({
+    shouldHaveChanged('multiComment', {
       name: 'sample #18',
       type: 'JSON',
       error: 'multi-comment',
@@ -418,10 +356,7 @@ describe('comments', () => {
 
 describe('fix operations', () => {
   it('simple', () => {
-    const json = fs.readFileSync('./test/samples/ops.json', 'utf-8');
-    const { data, changed } = jf(json);
-    expect(changed).toBeTruthy();
-    expect(data).toEqual({
+    shouldHaveChanged('ops', {
       name: 'sample #20',
       type: 'JSON',
       error: 'operations',
@@ -430,10 +365,7 @@ describe('fix operations', () => {
   });
 
   it('unary', () => {
-    const json = fs.readFileSync('./test/samples/monOps.json', 'utf-8');
-    const { data, changed } = jf(json);
-    expect(changed).toBeTruthy();
-    expect(data).toEqual({
+    shouldHaveChanged('monOps', {
       name: 'sample #26',
       type: 'JSON',
       error: 'unary operations',
@@ -442,10 +374,7 @@ describe('fix operations', () => {
   });
 
   it('multi', () => {
-    const json = fs.readFileSync('./test/samples/multiOps.json', 'utf-8');
-    const { data, changed } = jf(json);
-    expect(changed).toBeTruthy();
-    expect(data).toEqual({
+    shouldHaveChanged('multiOps', {
       name: 'sample #27',
       type: 'JSON',
       error: 'multi operations',
@@ -456,10 +385,7 @@ describe('fix operations', () => {
 
 describe('fix concatenations', () => {
   it('simple', () => {
-    const json = fs.readFileSync('./test/samples/concat.json', 'utf-8');
-    const { data, changed } = jf(json);
-    expect(changed).toBeTruthy();
-    expect(data).toEqual({
+    shouldHaveChanged('concat', {
       name: 'sample #25',
       type: 'JSON',
       error: 'concat',
@@ -468,24 +394,22 @@ describe('fix concatenations', () => {
   });
 
   it('verbose', () => {
-    const json = fs.readFileSync('./test/samples/concat.json', 'utf-8');
-    const { data, changed } = jf(json, { verbose: true });
-    expect(changed).toBeTruthy();
-    expect(data).toEqual({
-      name: 'sample #25',
-      type: 'JSON',
-      error: 'concat',
-      version: 25
-    });
+    shouldHaveChanged(
+      'concat',
+      {
+        name: 'sample #25',
+        type: 'JSON',
+        error: 'concat',
+        version: 25
+      },
+      { verbose: true }
+    );
   });
 });
 
 describe('multi rounds', () => {
   it('x2', () => {
-    const json = fs.readFileSync('./test/samples/twoErrs.json', 'utf-8');
-    const { data, changed } = jf(json);
-    expect(changed).toBeTruthy();
-    expect(data).toEqual({
+    shouldHaveChanged('twoErrs', {
       name: 'sample #19',
       type: 'JSON',
       error: '2 errors',
@@ -494,22 +418,20 @@ describe('multi rounds', () => {
   });
 
   it('x2 (verbose)', () => {
-    const json = fs.readFileSync('./test/samples/twoErrs.json', 'utf-8');
-    const { data, changed } = jf(json, { verbose: true });
-    expect(changed).toBeTruthy();
-    expect(data).toEqual({
-      name: 'sample #19',
-      type: 'JSON',
-      error: '2 errors',
-      version: 19
-    });
+    shouldHaveChanged(
+      'twoErrs',
+      {
+        name: 'sample #19',
+        type: 'JSON',
+        error: '2 errors',
+        version: 19
+      },
+      { verbose: true }
+    );
   });
 
   it('x3', () => {
-    const json = fs.readFileSync('./test/samples/threeErrs.json', 'utf-8');
-    const { data, changed } = jf(json);
-    expect(changed).toBeTruthy();
-    expect(data).toEqual({
+    shouldHaveChanged('threeErrs', {
       name: 'sample #21',
       type: 'JSON',
       error: '3 errors',
