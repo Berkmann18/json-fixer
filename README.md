@@ -78,6 +78,9 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://andrepaulo.me"><img src="https://avatars1.githubusercontent.com/u/19685105?v=4" width="100px;" alt=""/><br /><sub><b>André Paulo</b></sub></a><br /><a href="https://github.com/Berkmann18/json-fixer/issues?q=author%3Aandre-paulo98" title="Bug reports">🐛</a></td>
     <td align="center"><a href="https://www.linkedin.com/in/erkinmatkaziev/"><img src="https://avatars2.githubusercontent.com/u/22586805?v=4" width="100px;" alt=""/><br /><sub><b>Erkin Matkaziev</b></sub></a><br /><a href="https://github.com/Berkmann18/json-fixer/issues?q=author%3AErkin97" title="Bug reports">🐛</a></td>
   </tr>
+  <tr>
+    <td align="center"><a href="https://www.codacy.com/"><img src="https://avatars3.githubusercontent.com/u/23704769?v=4" width="100px;" alt=""/><br /><sub><b>Codacy Badger</b></sub></a><br /><a href="#infra-codacy-badger" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a></td>
+  </tr>
 </table>
 
 <!-- markdownlint-enable -->

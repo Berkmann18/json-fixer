@@ -78,6 +78,15 @@
       "contributions": [
         "bug"
       ]
+    },
+    {
+      "login": "codacy-badger",
+      "name": "Codacy Badger",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/23704769?v=4",
+      "profile": "https://www.codacy.com/",
+      "contributions": [
+        "infra"
+      ]
     }
   ],
   "contributorsPerLine": 7,
