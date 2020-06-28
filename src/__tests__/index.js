@@ -1,4 +1,4 @@
-const { exam } = require('../test-utils');
+const { exam } = require('../test.utils');
 
 const shouldHaveChanged = (sampleName, expectedOutput, fixerOptions = {}) => {
   exam({ sampleName, expectedOutput, fixerOptions, expectedChange: true });

@@ -119,7 +119,7 @@
     "collectCoverageFrom": [
       "index.js",
       "src/**/*.{js,ts}",
-      "!src/test-utils.js"
+      "!src/test.utils.js"
     ]
   }
 }
