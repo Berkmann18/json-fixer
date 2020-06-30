@@ -60,7 +60,7 @@
   ],
   "dependencies": {
     "@babel/runtime": "^7.10.2",
-    "chalk": "^4.0.0",
+    "chalk": "^4.1.0",
     "pegjs": "^0.10.0"
   },
   "devDependencies": {
