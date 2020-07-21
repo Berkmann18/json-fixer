@@ -59,7 +59,7 @@
     "check"
   ],
   "dependencies": {
-    "@babel/runtime": "^7.10.3",
+    "@babel/runtime": "^7.10.4",
     "chalk": "^4.1.0",
     "pegjs": "^0.10.0"
   },
