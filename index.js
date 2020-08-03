@@ -55,6 +55,8 @@ const comment = (err) => err.found === '/';
 
 const ops = (err) => ['+', '-', '*', '/', '>', '<', '~', '|', '&', '^'].includes(err.found);
 
+const extraBrackets = (err) => err.found === '}';
+
 const runFixer = ({ verbose, lines, start, err }) => {
   /* eslint-disable security/detect-object-injection */
   let fixedData = [...lines];
@@ -80,6 +82,8 @@ const runFixer = ({ verbose, lines, start, err }) => {
     fixedData = fixer.fixComment({ start, fixedData, verbose });
   } else if (ops(err)) {
     fixedData = fixer.fixOpConcat({ start, fixedData, verbose });
+  } else if (extraBrackets(err)) {
+    fixedData = fixer.fixExtraCurlyBrackets({ start, fixedData, verbose });
   } else throw new Error(`Unsupported issue: ${err.message} (please open an issue at the repo)`);
   return fixedData;
 };
