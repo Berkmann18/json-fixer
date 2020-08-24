@@ -163,8 +163,9 @@ function fixExtraCurlyBrackets({ start, fixedData, verbose }) {
   const fullData = fixedData.join('\n');
   let fixedLine = removeLinebreak(fixedData[targetLine]);
 
-  const openingCount = [...fullData].filter((c) => c === '{').length;
-  const closingCount = [...fullData].filter((c) => c === '}').length;
+  const data = fullData.split('');
+  const openingCount = data.filter((c) => c === '{').length;
+  const closingCount = data.filter((c) => c === '}').length;
   const bracketDiff = closingCount - openingCount;
 
   for (let i = 0; i < bracketDiff; i++) {
