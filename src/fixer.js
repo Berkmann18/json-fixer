@@ -156,6 +156,27 @@ const fixOpConcat = ({ start, fixedData, verbose }) => {
   return fixedData;
 };
 
+function fixExtraCurlyBrackets({ start, fixedData, verbose }) {
+  if (verbose) psw(chalk.magenta('Extra curly brackets'));
+
+  const targetLine = start.line - 1;
+  const fullData = fixedData.join('\n');
+  let fixedLine = removeLinebreak(fixedData[targetLine]);
+
+  const data = fullData.split('');
+  const openingCount = data.filter((c) => c === '{').length;
+  const closingCount = data.filter((c) => c === '}').length;
+  const bracketDiff = closingCount - openingCount;
+
+  for (let i = 0; i < bracketDiff; i++) {
+    const index = fixedLine.lastIndexOf('}');
+    fixedLine = fixedLine.slice(0, index) + fixedLine.slice(index + 1);
+  }
+
+  fixedData[targetLine] = fixedLine;
+  return fixedData;
+}
+
 module.exports = {
   fixExtraChar,
   fixSingleQuotes,
@@ -164,5 +185,6 @@ module.exports = {
   fixSquareBrackets,
   fixCurlyBrackets,
   fixComment,
-  fixOpConcat
+  fixOpConcat,
+  fixExtraCurlyBrackets
 };

@@ -289,6 +289,12 @@ describe('fix wrong brackets', () => {
       { verbose: true }
     );
   });
+
+  it('extra brackets', () => {
+    shouldHaveChanged('extraBrackets', {
+      error: 'extra brackets'
+    });
+  });
 });
 
 describe('comments', () => {
