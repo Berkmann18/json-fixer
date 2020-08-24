@@ -1,3 +1,10 @@
+# [1.6.0](https://github.com/Berkmann18/json-fixer/compare/v1.5.4...v1.6.0) (2020-08-24)
+
+
+### Features
+
+* **extra-brackets:** fix extra brackets ([6958b4b](https://github.com/Berkmann18/json-fixer/commit/6958b4b7d209fd128c1241ab4868190195defaab))
+
 ## [1.5.4](https://github.com/Berkmann18/json-fixer/compare/v1.5.3...v1.5.4) (2020-07-22)
 
 
