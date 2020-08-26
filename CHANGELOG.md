@@ -1,3 +1,11 @@
+## [1.6.2](https://github.com/Berkmann18/json-fixer/compare/v1.6.1...v1.6.2) (2020-08-26)
+
+
+### Bug Fixes
+
+* **lockfile:** security update ([54c3bf0](https://github.com/Berkmann18/json-fixer/commit/54c3bf0532be98126e2f6b6b04707a7f5c2a8b73))
+* **lockfile:** vulnerability fix ([4b501a8](https://github.com/Berkmann18/json-fixer/commit/4b501a8ee6c9c3b015f43651b43bef4f6a08056d))
+
 ## [1.6.1](https://github.com/Berkmann18/json-fixer/compare/v1.6.0...v1.6.1) (2020-08-24)
 
 
