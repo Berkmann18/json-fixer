@@ -187,7 +187,7 @@ const fixSpecialChar = ({ start, fixedData, verbose }) => {
     .replace(/\n/g, '\\n')
     .replace(/\r/g, '\\r')
     .replace(/\t/g, '\\t')
-    .replace(/\\/g, '\\');
+    .replace(/\\/g, '\\\\');
 
   if (brokenLine.endsWith('"') && brokenLine[start.column] === undefined) {
     if (verbose) psw(chalk.magenta('New line'));
