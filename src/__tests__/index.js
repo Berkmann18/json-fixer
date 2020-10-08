@@ -411,3 +411,23 @@ describe('multi rounds', () => {
     });
   });
 });
+
+describe('special chars', () => {
+  it('tab', () => {
+    shouldHaveChanged('tab', {
+      Test: '\t'
+    });
+  });
+
+  it('formatted tab', () => {
+    shouldHaveChanged('tabs', {
+      Test: '\t'
+    });
+  });
+
+  it('new line', () => {
+    shouldHaveChanged('newLines', {
+      Broken: '\n'
+    });
+  });
+});
