@@ -1,3 +1,12 @@
+## [1.6.5](https://github.com/Berkmann18/json-fixer/compare/v1.6.4...v1.6.5) (2020-10-08)
+
+
+### Bug Fixes
+
+* **fixer:** addressed DeepScan's issue ([2c5868d](https://github.com/Berkmann18/json-fixer/commit/2c5868d3d89fcde097ddbe7a5be9410f551701ee))
+* **fixer:** removed futile LOC ([56f23a1](https://github.com/Berkmann18/json-fixer/commit/56f23a1cee0cfa6546dc212ee6b471b80a7e7529))
+* fixes special characters ([4e804e5](https://github.com/Berkmann18/json-fixer/commit/4e804e5e041fd7e75d2a6a95dcedca6011acefea))
+
 ## [1.6.4](https://github.com/Berkmann18/json-fixer/compare/v1.6.3...v1.6.4) (2020-10-08)
 
 
