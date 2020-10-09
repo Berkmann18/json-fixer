@@ -89,6 +89,15 @@
         "infra",
         "doc"
       ]
+    },
+    {
+      "login": "jonasmaertens",
+      "name": "jonasmaertens",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/71458938?v=4",
+      "profile": "https://github.com/jonasmaertens",
+      "contributions": [
+        "bug"
+      ]
     }
   ],
   "contributorsPerLine": 7,
