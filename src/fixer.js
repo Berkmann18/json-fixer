@@ -156,7 +156,7 @@ const fixOpConcat = ({ start, fixedData, verbose }) => {
   return fixedData;
 };
 
-function fixExtraCurlyBrackets({ start, fixedData, verbose }) {
+const fixExtraCurlyBrackets = ({ start, fixedData, verbose }) => {
   if (verbose) psw(chalk.magenta('Extra curly brackets'));
 
   const targetLine = start.line - 1;
@@ -175,7 +175,30 @@ function fixExtraCurlyBrackets({ start, fixedData, verbose }) {
 
   fixedData[targetLine] = fixedLine;
   return fixedData;
-}
+};
+
+const fixSpecialChar = ({ start, fixedData, verbose }) => {
+  if (verbose) psw(chalk.magenta('Special character'));
+  const targetLine = start.line - 1;
+  const brokenLine = fixedData[targetLine];
+
+  let fixedLine = brokenLine
+    .replace(/\f/g, '\\f')
+    .replace(/\n/g, '\\n')
+    .replace(/\r/g, '\\r')
+    .replace(/\t/g, '\\t');
+
+  if (brokenLine.endsWith('"') && brokenLine[start.column] === undefined) {
+    if (verbose) psw(chalk.magenta('New line'));
+    const removedIndex = targetLine + 1;
+    const continuation = fixedData[removedIndex];
+    fixedLine = `${brokenLine}\\n${continuation}`;
+    fixedData.splice(removedIndex, 1);
+  }
+
+  fixedData[targetLine] = fixedLine;
+  return fixedData;
+};
 
 module.exports = {
   fixExtraChar,
@@ -186,5 +209,6 @@ module.exports = {
   fixCurlyBrackets,
   fixComment,
   fixOpConcat,
-  fixExtraCurlyBrackets
+  fixExtraCurlyBrackets,
+  fixSpecialChar
 };

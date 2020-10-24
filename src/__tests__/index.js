@@ -1,4 +1,4 @@
-const { exam } = require('../test-utils');
+const { exam } = require('../test.utils');
 
 const shouldHaveChanged = (sampleName, expectedOutput, fixerOptions = {}) => {
   exam({ sampleName, expectedOutput, fixerOptions, expectedChange: true });
@@ -408,6 +408,26 @@ describe('multi rounds', () => {
       type: 'JSON',
       error: '3 errors',
       version: 21
+    });
+  });
+});
+
+describe('special chars', () => {
+  it('tab', () => {
+    shouldHaveChanged('tab', {
+      Test: '\t'
+    });
+  });
+
+  it('formatted tab', () => {
+    shouldHaveChanged('tabs', {
+      Test: '\t'
+    });
+  });
+
+  it('new line', () => {
+    shouldHaveChanged('newLines', {
+      Broken: '\n'
     });
   });
 });

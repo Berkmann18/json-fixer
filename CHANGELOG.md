@@ -1,3 +1,48 @@
+## [1.6.5](https://github.com/Berkmann18/json-fixer/compare/v1.6.4...v1.6.5) (2020-10-08)
+
+
+### Bug Fixes
+
+* **fixer:** addressed DeepScan's issue ([2c5868d](https://github.com/Berkmann18/json-fixer/commit/2c5868d3d89fcde097ddbe7a5be9410f551701ee))
+* **fixer:** removed futile LOC ([56f23a1](https://github.com/Berkmann18/json-fixer/commit/56f23a1cee0cfa6546dc212ee6b471b80a7e7529))
+* fixes special characters ([4e804e5](https://github.com/Berkmann18/json-fixer/commit/4e804e5e041fd7e75d2a6a95dcedca6011acefea))
+
+## [1.6.4](https://github.com/Berkmann18/json-fixer/compare/v1.6.3...v1.6.4) (2020-10-08)
+
+
+### Bug Fixes
+
+* upgrade @babel/runtime from 7.11.0 to 7.11.2 ([73e644e](https://github.com/Berkmann18/json-fixer/commit/73e644edde358afbd9a582cec5755a7797a64671))
+
+## [1.6.3](https://github.com/Berkmann18/json-fixer/compare/v1.6.2...v1.6.3) (2020-08-26)
+
+
+### Bug Fixes
+
+* upgrade @babel/runtime from 7.10.5 to 7.11.0 ([4cc9017](https://github.com/Berkmann18/json-fixer/commit/4cc90175f75b230d28bb737c9d0cb6384f0ed7b6))
+
+## [1.6.2](https://github.com/Berkmann18/json-fixer/compare/v1.6.1...v1.6.2) (2020-08-26)
+
+
+### Bug Fixes
+
+* **lockfile:** security update ([54c3bf0](https://github.com/Berkmann18/json-fixer/commit/54c3bf0532be98126e2f6b6b04707a7f5c2a8b73))
+* **lockfile:** vulnerability fix ([4b501a8](https://github.com/Berkmann18/json-fixer/commit/4b501a8ee6c9c3b015f43651b43bef4f6a08056d))
+
+## [1.6.1](https://github.com/Berkmann18/json-fixer/compare/v1.6.0...v1.6.1) (2020-08-24)
+
+
+### Bug Fixes
+
+* upgrade @babel/runtime from 7.10.4 to 7.10.5 ([cf9367b](https://github.com/Berkmann18/json-fixer/commit/cf9367b18e8551e47eee381b65103f920b81ed82))
+
+# [1.6.0](https://github.com/Berkmann18/json-fixer/compare/v1.5.4...v1.6.0) (2020-08-24)
+
+
+### Features
+
+* **extra-brackets:** fix extra brackets ([6958b4b](https://github.com/Berkmann18/json-fixer/commit/6958b4b7d209fd128c1241ab4868190195defaab))
+
 ## [1.5.4](https://github.com/Berkmann18/json-fixer/compare/v1.5.3...v1.5.4) (2020-07-22)
 
 

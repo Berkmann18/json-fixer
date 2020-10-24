@@ -1,6 +1,6 @@
 {
   "name": "json-fixer",
-  "version": "1.5.1",
+  "version": "1.6.5",
   "description": "A JSON fixer",
   "main": "index.js",
   "repository": "https://github.com/Berkmann18/json-fixer.git",
@@ -59,7 +59,7 @@
     "check"
   ],
   "dependencies": {
-    "@babel/runtime": "^7.10.4",
+    "@babel/runtime": "^7.11.2",
     "chalk": "^4.1.0",
     "pegjs": "^0.10.0"
   },
@@ -119,7 +119,7 @@
     "collectCoverageFrom": [
       "index.js",
       "src/**/*.{js,ts}",
-      "!src/test-utils.js"
+      "!src/test.utils.js"
     ]
   }
 }

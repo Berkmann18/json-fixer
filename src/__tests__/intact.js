@@ -1,4 +1,4 @@
-const { exam } = require('../test-utils');
+const { exam } = require('../test.utils');
 
 describe('keeps a correct file intact', () => {
   it('normal file', () => {
