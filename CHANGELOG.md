@@ -1,3 +1,10 @@
+## [1.6.8](https://github.com/Berkmann18/json-fixer/compare/v1.6.7...v1.6.8) (2020-11-25)
+
+
+### Bug Fixes
+
+* upgrade @babel/runtime from 7.12.1 to 7.12.5 ([d77dc09](https://github.com/Berkmann18/json-fixer/commit/d77dc09d01b936f6919f8f91d87662050056ec48))
+
 ## [1.6.7](https://github.com/Berkmann18/json-fixer/compare/v1.6.6...v1.6.7) (2020-11-08)
 
 

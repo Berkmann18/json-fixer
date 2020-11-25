@@ -1,6 +1,6 @@
 {
   "name": "json-fixer",
-  "version": "1.6.7",
+  "version": "1.6.8",
   "description": "A JSON fixer",
   "main": "index.js",
   "repository": "https://github.com/Berkmann18/json-fixer.git",
