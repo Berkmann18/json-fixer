@@ -80,6 +80,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
   </tr>
   <tr>
     <td align="center"><a href="https://www.codacy.com/"><img src="https://avatars3.githubusercontent.com/u/23704769?v=4" width="100px;" alt=""/><br /><sub><b>Codacy Badger</b></sub></a><br /><a href="#infra-codacy-badger" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a> <a href="https://github.com/Berkmann18/json-fixer/commits?author=codacy-badger" title="Documentation">📖</a></td>
+    <td align="center"><a href="https://github.com/GiraffeKey"><img src="https://avatars2.githubusercontent.com/u/11844126?v=4" width="100px;" alt=""/><br /><sub><b>GiraffeKey</b></sub></a><br /><a href="https://github.com/Berkmann18/json-fixer/commits?author=GiraffeKey" title="Code">💻</a> <a href="https://github.com/Berkmann18/json-fixer/commits?author=GiraffeKey" title="Tests">⚠️</a></td>
     <td align="center"><a href="https://github.com/jonasmaertens"><img src="https://avatars3.githubusercontent.com/u/71458938?v=4" width="100px;" alt=""/><br /><sub><b>jonasmaertens</b></sub></a><br /><a href="https://github.com/Berkmann18/json-fixer/issues?q=author%3Ajonasmaertens" title="Bug reports">🐛</a></td>
   </tr>
 </table>
