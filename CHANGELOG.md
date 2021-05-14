@@ -1,3 +1,10 @@
+## [1.6.9](https://github.com/Berkmann18/json-fixer/compare/v1.6.8...v1.6.9) (2021-05-14)
+
+
+### Bug Fixes
+
+* upgrade chalk from 4.1.0 to 4.1.1 ([549ea47](https://github.com/Berkmann18/json-fixer/commit/549ea4702a2ff3dc5bcb537385196720a2790c01))
+
 ## [1.6.8](https://github.com/Berkmann18/json-fixer/compare/v1.6.7...v1.6.8) (2020-11-25)
 
 
