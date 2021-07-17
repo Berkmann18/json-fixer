@@ -16,10 +16,8 @@ const doubleCheck = (data, options = {}) => {
   const verbose = options.verbose;
   try {
     const res = parse(data);
-    psw(`\n${chalk.cyan('The JSON data was fixed!')}`);
-    if (res) {
-      return options.parse ? res : data;
-    }
+    if (verbose) psw(`\n${chalk.cyan('The JSON data was fixed!')}`);
+    if (res) return options.parse ? res : data;
   } catch (err) {
     if (verbose) {
       psw('Nearly fixed data:');
