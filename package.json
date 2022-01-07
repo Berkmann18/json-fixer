@@ -1,6 +1,6 @@
 {
   "name": "json-fixer",
-  "version": "1.6.12",
+  "version": "1.6.13",
   "description": "A JSON fixer",
   "main": "index.js",
   "repository": "https://github.com/Berkmann18/json-fixer.git",
@@ -60,7 +60,7 @@
   ],
   "dependencies": {
     "@babel/runtime": "^7.14.8",
-    "chalk": "^4.1.1",
+    "chalk": "^4.1.2",
     "pegjs": "^0.10.0"
   },
   "devDependencies": {
