@@ -87,7 +87,7 @@
     "remark-cli": "^8.0.0",
     "remark-preset-lint-consistent": "^3.0.0",
     "remark-preset-lint-recommended": "^4.0.0",
-    "semantic-release": "^17.0.8",
+    "semantic-release": "^19.0.3",
     "snyk": "^1.336.0"
   },
   "config": {
